@@ -1,0 +1,18 @@
+# Eclipse artifacts
+.classpath
+.project
+
+# IDEA artifacts and output dirs
+*.iml
+*.ipr
+*.iws
+.idea
+out
+test-output
+.settings
+#.gitignore
+target/
+/.project
+/.vscode/
+/.settings/
+/.idea
