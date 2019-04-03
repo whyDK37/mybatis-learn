@@ -32,12 +32,12 @@ import org.w3c.dom.NodeList;
  */
 public class XNode {
 
-  private Node node;
-  private String name;
-  private String body;
-  private Properties attributes;
-  private Properties variables;
-  private XPathParser xpathParser;
+  private Node node;// org.w3c . dorn . Node 对象
+  private String name;// Node 节点名称
+  private String body;// ／节点的内容
+  private Properties attributes;//节点属性集合
+  private Properties variables;//llrnybatis-config . xrnl 配置文件中＜ propert i es ＞节点下定义的键位对
+  private XPathParser xpathParser;//前面介绍的X PathParser 对象，该XN ode 对象由此XPa thParser 对象生成
 
   public XNode(XPathParser xpathParser, Node node, Properties variables) {
     this.xpathParser = xpathParser;
