@@ -9,5 +9,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>mybatis-3.3.x</module>
+  	<module>mybatis-3.4.x</module>
   </modules>
 </project>
