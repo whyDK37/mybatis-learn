@@ -52,13 +52,20 @@ public class MapperMethod {
 
   public Object execute(SqlSession sqlSession, Object[] args) {
     Object result;
+    // 根据SQL 语句的类型调用SqlSession 对应的方法
     switch (command.getType()) {
       case INSERT: {
+        //使用ParamNameResolver 处理args ［］数量且（用户传入的实参列表），将用户传入的实参与
+        //指定参数名称关联起来
       Object param = method.convertArgsToSqlCommandParam(args);
+      //／／调用SqlSession .inser t （）方法， rowCountResult （）方法会根据method 字段中记录的方法的
+        //／／返回值类型对结果进行转换
         result = rowCountResult(sqlSession.insert(command.getName(), param));
         break;
       }
       case UPDATE: {
+        // I I UPDATE 和DELETE 类型的SQL 语句的处理与INSERT 类型的SQL 语句类似，唯一的区别是调用了
+        //II SqlSession 的update （）方法和delete （）方法
         Object param = method.convertArgsToSqlCommandParam(args);
         result = rowCountResult(sqlSession.update(command.getName(), param));
         break;
@@ -69,16 +76,17 @@ public class MapperMethod {
         break;
       }
       case SELECT:
+        // 处理返回值为void 且ResultSet 通过Re sultHandler 处理的方法
         if (method.returnsVoid() && method.hasResultHandler()) {
           executeWithResultHandler(sqlSession, args);
           result = null;
-        } else if (method.returnsMany()) {
+        } else if (method.returnsMany()) {//处理返回值为集合或数组的方法
           result = executeForMany(sqlSession, args);
-        } else if (method.returnsMap()) {
+        } else if (method.returnsMap()) {// 处理返回值为Map 的方法
           result = executeForMap(sqlSession, args);
-        } else if (method.returnsCursor()) {
+        } else if (method.returnsCursor()) {//处理返回值为Cursor 的方法
           result = executeForCursor(sqlSession, args);
-        } else {
+        } else { // 处理返回值为单一对象的方法
           Object param = method.convertArgsToSqlCommandParam(args);
           result = sqlSession.selectOne(command.getName(), param);
         }
@@ -113,32 +121,44 @@ public class MapperMethod {
   }
 
   private void executeWithResultHandler(SqlSession sqlSession, Object[] args) {
+    // 获取SQL 语句对应的MappedStatement 对象， MappedStatement 中记录了SQL 语句相关信息，
+    // 后面详细描述
     MappedStatement ms = sqlSession.getConfiguration().getMappedStatement(command.getName());
+    // 当使用ResultHandler 处理结采集时，必须指定ResultMap 或ResultType
     if (!StatementType.CALLABLE.equals(ms.getStatementType())
         && void.class.equals(ms.getResultMaps().get(0).getType())) {
       throw new BindingException("method " + command.getName()
           + " needs either a @ResultMap annotation, a @ResultType annotation,"
           + " or a resultType attribute in XML so a ResultHandler can be used as a parameter.");
     }
-    Object param = method.convertArgsToSqlCommandParam(args);
-    if (method.hasRowBounds()) {
+    Object param = method.convertArgsToSqlCommandParam(args);// 转换实参列表，不再赘述
+    if (method.hasRowBounds()) { // 检测参数列表中是否有RowBounds 类型的参数
+      // 获取 RowBounds 对象，根据MethodSignature.rowBoundsindex 字段指定位置，从args 数组中
+      // 查找。获取ResultHandler 对象的原理相同
       RowBounds rowBounds = method.extractRowBounds(args);
+      // 调用SqlSession . select （）方法，执行查询，并由指定的ResultHandler 处理结采对象
       sqlSession.select(command.getName(), param, rowBounds, method.extractResultHandler(args));
     } else {
       sqlSession.select(command.getName(), param, method.extractResultHandler(args));
     }
   }
 
+  /**
+   * 如果Mapper 接口中对应方法的返回值为数组或是Collection 接口实现类，则通过
+   * MapperMethod.executeForMany （）方法处理
+   */
   private <E> Object executeForMany(SqlSession sqlSession, Object[] args) {
     List<E> result;
-    Object param = method.convertArgsToSqlCommandParam(args);
-    if (method.hasRowBounds()) {
+    Object param = method.convertArgsToSqlCommandParam(args);// 参数列表转换
+    if (method.hasRowBounds()) {// 检测是否指定了RowBounds 参数
       RowBounds rowBounds = method.extractRowBounds(args);
+      // 调用SqlSession.selectList （）方法完成查询
       result = sqlSession.<E>selectList(command.getName(), param, rowBounds);
     } else {
       result = sqlSession.<E>selectList(command.getName(), param);
     }
     // issue #510 Collections & arrays support
+    // 将结采集转换为数纽或Collection 集合
     if (!method.getReturnType().isAssignableFrom(result.getClass())) {
       if (method.getReturnType().isArray()) {
         return convertToArray(result);
@@ -162,9 +182,11 @@ public class MapperMethod {
   }
 
   private <E> Object convertToDeclaredCollection(Configuration config, List<E> list) {
+    // 使用前面介绍的ObjectFactory ，通过反射方式创建集合对象
     Object collection = config.getObjectFactory().create(method.getReturnType());
+    // 创建MetaObject 对象
     MetaObject metaObject = config.newMetaObject(collection);
-    metaObject.addAll(list);
+    metaObject.addAll(list); // 实际上就是调用Col lec tion. addAll （）方法
     return collection;
   }
 
@@ -272,11 +294,15 @@ public class MapperMethod {
     private final boolean returnsCursor;
     private final Class<?> returnType;
     private final String mapKey;
+    // 用来标记该方法参数列表中 ResultHandler 类型参数的位置
     private final Integer resultHandlerIndex;
+    // 用来标记该方法参数列表中 RowBounds 类型参数的位置
     private final Integer rowBoundsIndex;
+    // 该方法对应的ParamNameResolver 对象
     private final ParamNameResolver paramNameResolver;
 
     public MethodSignature(Configuration configuration, Class<?> mapperInterface, Method method) {
+      // 解析方法的返回值类型，前面已经介绍过 TypeParameterResolver 的实现，这里不再赞述
       Type resolvedReturnType = TypeParameterResolver.resolveReturnType(method, mapperInterface);
       if (resolvedReturnType instanceof Class<?>) {
         this.returnType = (Class<?>) resolvedReturnType;
@@ -285,13 +311,17 @@ public class MapperMethod {
       } else {
         this.returnType = method.getReturnType();
       }
+      // 初始化returnsVoid 、returnsMany 、returnsCursor 、mapKey 、returnsMap 等字段
       this.returnsVoid = void.class.equals(this.returnType);
       this.returnsMany = configuration.getObjectFactory().isCollection(this.returnType) || this.returnType.isArray();
       this.returnsCursor = Cursor.class.equals(this.returnType);
+      // 若MethodSignature 对应方法的返回位是Map 且指定了＠ Map Key j主解， ~1］使用getMapKey （）方法处理
       this.mapKey = getMapKey(method);
       this.returnsMap = this.mapKey != null;
+      // 初始化rowBoundsindex 和resultHandlerindex 字段
       this.rowBoundsIndex = getUniqueParamIndex(method, RowBounds.class);
       this.resultHandlerIndex = getUniqueParamIndex(method, ResultHandler.class);
+      // 创建ParamNameResolver 对象
       this.paramNameResolver = new ParamNameResolver(configuration, method);
     }
 
@@ -342,11 +372,14 @@ public class MapperMethod {
     private Integer getUniqueParamIndex(Method method, Class<?> paramType) {
       Integer index = null;
       final Class<?>[] argTypes = method.getParameterTypes();
+      // 遍历 MethodSignature 对应方法的参数列表
       for (int i = 0; i < argTypes.length; i++) {
         if (paramType.isAssignableFrom(argTypes[i])) {
+          // 记录paramType 类型参数在参数列表中的位置索引
           if (index == null) {
             index = i;
           } else {
+            // RowBounds 和ResultHandler 类型的参数只能有一个，不能重复出现
             throw new BindingException(method.getName() + " cannot have multiple " + paramType.getSimpleName() + " parameters");
           }
         }

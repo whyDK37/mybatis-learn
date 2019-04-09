@@ -50,26 +50,35 @@ public class ParamNameResolver {
   private boolean hasParamAnnotation;
 
   public ParamNameResolver(Configuration config, Method method) {
+    // 获取参数列表中每个参数的类型
     final Class<?>[] paramTypes = method.getParameterTypes();
+    // 获取参数列表上的注解
     final Annotation[][] paramAnnotations = method.getParameterAnnotations();
+    // 该集合用于记录参数索引与参数名称的对应关系
     final SortedMap<Integer, String> map = new TreeMap<Integer, String>();
     int paramCount = paramAnnotations.length;
     // get names from @Param annotations
     for (int paramIndex = 0; paramIndex < paramCount; paramIndex++) {
       if (isSpecialParameter(paramTypes[paramIndex])) {
         // skip special parameters
+        // 如采参数是RowBounds 类型或ResultHandler 类型，贝1］跳过对该参数的分析
         continue;
       }
       String name = null;
+      // 遥历参数对应的注解集合
       for (Annotation annotation : paramAnnotations[paramIndex]) {
         if (annotation instanceof Param) {
+          // @Param i主解出现过一次，就将hasParamAnnotation 初始化为true
           hasParamAnnotation = true;
-          name = ((Param) annotation).value();
+          name = ((Param) annotation).value();//获取自Param 注解指定的参数名称
           break;
         }
       }
+
+      // 这个if 代码段解释了上面的示例中names 集合项的value 为什么是”0”和” 1 ”
       if (name == null) {
         // @Param was not specified.
+        // 该参数没有对应的＠ Param i主解，则根据自己置决定是否使用参数实际名称作为其名称
         if (config.isUseActualParamName()) {
           name = getActualParamName(method, paramIndex);
         }
@@ -114,16 +123,27 @@ public class ParamNameResolver {
     final int paramCount = names.size();
     if (args == null || paramCount == 0) {
       return null;
-    } else if (!hasParamAnnotation && paramCount == 1) {
+    }
+    // 未使用自 Param 且只有一个参数
+    else if (!hasParamAnnotation && paramCount == 1) {
       return args[names.firstKey()];
     } else {
+    // 处理使用自 Param  注解指定了参数名称或有多个参数的情况
+    // param 这个 Map 中记录了参数名称与实参之间的对应关系。
+    // ParamMap 继承了 HashMap ，如果向
+    // ParamMap 中添加已经存在的 key ，会报错，其他行为与 HashMap 相同
       final Map<String, Object> param = new ParamMap<Object>();
       int i = 0;
       for (Map.Entry<Integer, String> entry : names.entrySet()) {
+        // 将参数名与实参对应关系记录到 param 中
         param.put(entry.getValue(), args[entry.getKey()]);
         // add generic param names (param1, param2, ...)
+          // 下面是为参数创建” param＋索号｜”格式的默认参数名称，
+          // 例如： param 1 , param2 等，并添加
+          // 到 param 集合中
         final String genericParamName = GENERIC_NAME_PREFIX + String.valueOf(i + 1);
         // ensure not to overwrite parameter named with @Param
+          // 如采 @Param 注解指定的参数名称就是” param＋索引”格式的，则不需要再添加
         if (!names.containsValue(genericParamName)) {
           param.put(genericParamName, args[entry.getKey()]);
         }
