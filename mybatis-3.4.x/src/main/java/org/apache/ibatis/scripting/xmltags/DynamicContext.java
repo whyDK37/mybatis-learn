@@ -42,8 +42,13 @@ public class DynamicContext {
   private final StringBuilder sqlBuilder = new StringBuilder();
   private int uniqueNumber = 0;
 
+  /**
+   * @param parameterObject 注意构造方法的第二个参数 parameterObject，它是运行时用户传入的参数，
+   *                        其中包含了后续用于替换“＃｛｝ ”占位符的实参。
+   */
   public DynamicContext(Configuration configuration, Object parameterObject) {
     if (parameterObject != null && !(parameterObject instanceof Map)) {
+      // 对于非Map 类型的参数，会创建对应的MetaObject 对象，并封装成ContextMap 对象
       MetaObject metaObject = configuration.newMetaObject(parameterObject);
       bindings = new ContextMap(metaObject);
     } else {
@@ -77,6 +82,7 @@ public class DynamicContext {
   static class ContextMap extends HashMap<String, Object> {
     private static final long serialVersionUID = 2977601501966151582L;
 
+    // ／／将用户传入的参数封装成了MetaObject 对象
     private MetaObject parameterMetaObject;
     public ContextMap(MetaObject parameterMetaObject) {
       this.parameterMetaObject = parameterMetaObject;
@@ -85,10 +91,12 @@ public class DynamicContext {
     @Override
     public Object get(Object key) {
       String strKey = (String) key;
+      // 如果ContextMap 中已经包含了该key ，则直接返回
       if (super.containsKey(strKey)) {
         return super.get(strKey);
       }
 
+      // 从运行时参数中查找对应属性
       if (parameterMetaObject != null) {
         // issue #61 do not modify the context when reading
         return parameterMetaObject.getValue(strKey);

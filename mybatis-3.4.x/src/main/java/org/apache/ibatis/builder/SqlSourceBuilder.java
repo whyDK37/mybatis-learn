@@ -39,6 +39,11 @@ public class SqlSourceBuilder extends BaseBuilder {
     super(configuration);
   }
 
+  // 下面先简单了解SqlSourceBuilder . parse （）方法的三个参数：
+  // 第一个参数是经过SqlNode . apply （）方法处理之后的SQL 语句
+  // 第二个参数是用户传入的实参类型
+  // 第三个参数记录了形参与实参的对应关系，其实就是经过SqlNode . apply （）方法处理后的
+  // DynamicContext . bindings 集合。
   public SqlSource parse(String originalSql, Class<?> parameterType, Map<String, Object> additionalParameters) {
     ParameterMappingTokenHandler handler = new ParameterMappingTokenHandler(configuration, parameterType, additionalParameters);
     GenericTokenParser parser = new GenericTokenParser("#{", "}", handler);

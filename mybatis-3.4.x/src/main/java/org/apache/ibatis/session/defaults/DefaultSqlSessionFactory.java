@@ -36,6 +36,9 @@ import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
  */
 public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
+  // II Configuration 是MyBatis 初始化过程的核心对象， MyBatis 中几乎全部的配置信息会保存到
+  //II Configuration 对象中。Configuration 对象是在MyBatis 初始化过程中创建且是全局唯一的，
+  //／／ 也有人称它是一个“ All-In-One ”配置对象
   private final Configuration configuration;
 
   public DefaultSqlSessionFactory(Configuration configuration) {

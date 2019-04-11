@@ -112,6 +112,7 @@ public class XMLMapperBuilder extends BaseBuilder {
       builderAssistant.setCurrentNamespace(namespace);
       cacheRefElement(context.evalNode("cache-ref"));
       cacheElement(context.evalNode("cache"));
+      //解析＜ parameterMap ＞节点（该节点已废弃，不再推荐使用，不做详细介绍）
       parameterMapElement(context.evalNodes("/mapper/parameterMap"));
       resultMapElements(context.evalNodes("/mapper/resultMap"));
       sqlElement(context.evalNodes("/mapper/sql"));

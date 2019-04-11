@@ -29,10 +29,12 @@ import org.apache.ibatis.session.Configuration;
  */
 public class TrimSqlNode implements SqlNode {
 
-  private final SqlNode contents;
-  private final String prefix;
-  private final String suffix;
+  private final SqlNode contents;//该＜ trim ＞ 节点的子节点
+  private final String prefix;//记录了前缀字符串（为＜ trim＞节点包袤的SQL 语句添加的前缀）
+  private final String suffix;//记录了后缀字符串（为＜ trim ＞节点包袤的SQL 语句添加的后缀）
+  //／／如果＜ trim ＞节点包袤的SQL 语句是空语句（经常出现在if 判断为否的情况下），删除指定的前缀，如where
   private final List<String> prefixesToOverride;
+  //／ ／如采＜ trim＞ 包袤的SQL 语句是空语句（经常出现在if 判断为否的情况下），删除指定的后缀，如逗号
   private final List<String> suffixesToOverride;
   private final Configuration configuration;
 
@@ -51,6 +53,7 @@ public class TrimSqlNode implements SqlNode {
 
   @Override
   public boolean apply(DynamicContext context) {
+    // 创建FilteredDynamicContext 对象，其中封装了DynamicContext
     FilteredDynamicContext filteredDynamicContext = new FilteredDynamicContext(context);
     boolean result = contents.apply(filteredDynamicContext);
     filteredDynamicContext.applyAll();

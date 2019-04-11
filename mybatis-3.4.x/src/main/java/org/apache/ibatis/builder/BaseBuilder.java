@@ -32,8 +32,16 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  * @author Clinton Begin
  */
 public abstract class BaseBuilder {
+  //II Configuration 是MyBatis 初始化过程的核心对象， MyBatis 中几乎全部的配置信息会保存到
+  //II Configuration 对象中。Configuration 对象是在MyBatis 初始化过程中创建且是全局唯一的，
+  //／／ 也有人称它是一个“ All-In-One ”配置对象
   protected final Configuration configuration;
+  //／／在mybatis-config . xml 配置文件中可以使用＜ typeAliases ＞标签定义别名，这些定义的别名都会记录在该
+  //II TypeAliasRegistry 对象中，在第2 章中已经介绍过其原理，不再重复描述
   protected final TypeAliasRegistry typeAliasRegistry;
+  //／／ 在mybatis-config.xml 配置文件中可以使用＜ t ypeHandlers ＞标签添加自定义Type Handler 荡，完
+  //／／成指定数据库类型与Java 类型的转换，这些Type Handler 都会记录在TypeHandlerRegistry 中。在
+  //／／第2 幸中已经介绍过其核心原理，不再重复描述
   protected final TypeHandlerRegistry typeHandlerRegistry;
 
   public BaseBuilder(Configuration configuration) {

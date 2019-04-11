@@ -23,6 +23,8 @@ import org.apache.ibatis.scripting.ScriptingException;
 import org.apache.ibatis.type.SimpleTypeRegistry;
 
 /**
+ * TextSq!Node 表示的是包含 $｛｝占位符的动态 SQL 节点。
+ * @see GenericTokenParser
  * @author Clinton Begin
  */
 public class TextSqlNode implements SqlNode {
@@ -32,12 +34,12 @@ public class TextSqlNode implements SqlNode {
   public TextSqlNode(String text) {
     this(text, null);
   }
-  
+
   public TextSqlNode(String text, Pattern injectionFilter) {
     this.text = text;
     this.injectionFilter = injectionFilter;
   }
-  
+
   public boolean isDynamic() {
     DynamicCheckerTokenParser checker = new DynamicCheckerTokenParser();
     GenericTokenParser parser = createParser(checker);
@@ -47,11 +49,14 @@ public class TextSqlNode implements SqlNode {
 
   @Override
   public boolean apply(DynamicContext context) {
+    // 创建GenericTokenParser 解析器， GenericTokenParser 前面介绍过了，这里重点来看
+    // BindingTokenParser 的功能
     GenericTokenParser parser = createParser(new BindingTokenParser(context, injectionFilter));
+    // 将解析后的 SQL 片段添加到 DynamicContext 中
     context.appendSql(parser.parse(text));
     return true;
   }
-  
+
   private GenericTokenParser createParser(TokenHandler handler) {
     return new GenericTokenParser("${", "}", handler);
   }
@@ -68,12 +73,14 @@ public class TextSqlNode implements SqlNode {
 
     @Override
     public String handleToken(String content) {
-      Object parameter = context.getBindings().get("_parameter");
+        // 获取用户提供的实参
+      Object parameter = context.getBindings().get(DynamicContext.PARAMETER_OBJECT_KEY);
       if (parameter == null) {
         context.getBindings().put("value", null);
       } else if (SimpleTypeRegistry.isSimpleType(parameter.getClass())) {
         context.getBindings().put("value", parameter);
       }
+      // 通过OGNL 解析content 的值
       Object value = OgnlCache.getValue(content, context.getBindings());
       String srtValue = (value == null ? "" : String.valueOf(value)); // issue #274 return "" instead of "null"
       checkInjection(srtValue);
@@ -86,7 +93,7 @@ public class TextSqlNode implements SqlNode {
       }
     }
   }
-  
+
   private static class DynamicCheckerTokenParser implements TokenHandler {
 
     private boolean isDynamic;
@@ -105,5 +112,5 @@ public class TextSqlNode implements SqlNode {
       return null;
     }
   }
-  
+
 }
