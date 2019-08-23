@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.ibatis.session.Configuration;
 
 /**
+ * WhereHandler 和 TrimHandler 是一个套路的原因。
  * @author Clinton Begin
  */
 public class WhereSqlNode extends TrimSqlNode {

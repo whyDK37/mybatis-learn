@@ -120,6 +120,10 @@ public class ForEachSqlNode implements SqlNode {
     return new StringBuilder(ITEM_PREFIX).append(item).append("_").append(i).toString();
   }
 
+  /**
+   * FilteredDynamicContext ，是 ForEachSqlNode 的内部类，继承 DynamicContext 类，
+   * 实现子节点访问 <foreach /> 标签中的变量的替换的 DynamicContext 实现类。
+   */
   private static class FilteredDynamicContext extends DynamicContext {
     private final DynamicContext delegate;
     private final int index;

@@ -26,15 +26,20 @@ import org.apache.ibatis.session.Configuration;
 
 /**
  * @author Clinton Begin
+ * @see TrimSqlNode#parseOverrides(java.lang.String)
+ * @see TrimSqlNode#apply(org.apache.ibatis.scripting.xmltags.DynamicContext)
  */
 public class TrimSqlNode implements SqlNode {
 
+  // 内含的 SqlNode 节点
   private final SqlNode contents;//该＜ trim ＞ 节点的子节点
+  // 前缀
   private final String prefix;//记录了前缀字符串（为＜ trim＞节点包袤的SQL 语句添加的前缀）
+  // 后缀
   private final String suffix;//记录了后缀字符串（为＜ trim ＞节点包袤的SQL 语句添加的后缀）
-  //／／如果＜ trim ＞节点包袤的SQL 语句是空语句（经常出现在if 判断为否的情况下），删除指定的前缀，如where
+  // 需要被删除的前缀
   private final List<String> prefixesToOverride;
-  //／ ／如采＜ trim＞ 包袤的SQL 语句是空语句（经常出现在if 判断为否的情况下），删除指定的后缀，如逗号
+  // 需要被删除的后缀
   private final List<String> suffixesToOverride;
   private final Configuration configuration;
 
@@ -42,7 +47,8 @@ public class TrimSqlNode implements SqlNode {
     this(configuration, contents, prefix, parseOverrides(prefixesToOverride), suffix, parseOverrides(suffixesToOverride));
   }
 
-  protected TrimSqlNode(Configuration configuration, SqlNode contents, String prefix, List<String> prefixesToOverride, String suffix, List<String> suffixesToOverride) {
+  protected TrimSqlNode(Configuration configuration, SqlNode contents, String prefix,
+                        List<String> prefixesToOverride, String suffix, List<String> suffixesToOverride) {
     this.contents = contents;
     this.prefix = prefix;
     this.prefixesToOverride = prefixesToOverride;
@@ -60,6 +66,9 @@ public class TrimSqlNode implements SqlNode {
     return result;
   }
 
+  /**
+   * 使用 | 分隔字符串成字符串数组，并都转换成大写。
+   */
   private static List<String> parseOverrides(String overrides) {
     if (overrides != null) {
       final StringTokenizer parser = new StringTokenizer(overrides, "|", false);

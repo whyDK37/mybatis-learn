@@ -20,7 +20,13 @@ package org.apache.ibatis.scripting.xmltags;
  */
 public class VarDeclSqlNode implements SqlNode {
 
+  /**
+   * 名字
+   */
   private final String name;
+  /**
+   * 表达式
+   */
   private final String expression;
 
   public VarDeclSqlNode(String var, String exp) {
@@ -28,9 +34,18 @@ public class VarDeclSqlNode implements SqlNode {
     expression = exp;
   }
 
+  /**
+   * <1> 处，调用 OgnlCache#getValue(String expression, Object root) 方法，获得表达式对应的值。
+   *     详细解析，见 「7.1 OgnlCache」 。
+   * <2> 处，调用 DynamicContext#bind(String name, Object value) 方法，绑定到上下文。
+   * @param context
+   * @return
+   */
   @Override
   public boolean apply(DynamicContext context) {
+    //<1> 获得值
     final Object value = OgnlCache.getValue(expression, context.getBindings());
+    // <2> 绑定到上下文
     context.bind(name, value);
     return true;
   }
