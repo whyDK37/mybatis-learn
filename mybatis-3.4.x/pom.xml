@@ -448,6 +448,7 @@
       <id>java17</id>
       <activation>
         <jdk>1.7</jdk>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
         <maven.compiler.testTarget>1.7</maven.compiler.testTarget>
