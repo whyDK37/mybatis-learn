@@ -13,6 +13,10 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.session.ResultHandler;
 
+/**
+ * 官方
+ * @see StatementHandler
+ */
 @Intercepts({
     @Signature(type = StatementHandler.class, method = "query", args = {Statement.class,
         ResultHandler.class})
