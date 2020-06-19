@@ -3,6 +3,8 @@ package mybatis.plugin;
 import java.sql.Statement;
 import java.util.Properties;
 import org.apache.ibatis.executor.statement.StatementHandler;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.logging.jdbc.PreparedStatementLogger;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
@@ -24,13 +26,19 @@ import org.apache.ibatis.session.ResultHandler;
 //实现Interceptor接口
 public class ThresholdInterceptor implements Interceptor {
 
+  private Log log = LogFactory.getLog(ThresholdInterceptor.class);
   private long slowSqlTime;
+
+  public ThresholdInterceptor() {
+    log.debug("init ThresholdInterceptor");
+  }
 
   /**
    * 处理业务逻辑的方法
    */
   @Override
   public Object intercept(Invocation invocation) throws Throwable {
+    log.debug("ThresholdInterceptor plugin...");
     long start = System.currentTimeMillis();
     //之前拦截方法，即query那个方法
     Object object = invocation.proceed();

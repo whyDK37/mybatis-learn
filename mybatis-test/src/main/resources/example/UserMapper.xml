@@ -11,7 +11,7 @@
   </resultMap>
 
 
-  <select id="getUserByID" parameterType="int" resultMap="userMap" useCache="true">
+  <select id="getUserByID" parameterType="java.lang.String" resultMap="userMap" useCache="true">
         select * from `user` where id = #{id}
     </select>
 </mapper>

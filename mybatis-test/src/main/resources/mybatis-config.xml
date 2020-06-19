@@ -20,6 +20,7 @@
 
 
   <plugins>
+<!--    <plugin interceptor="mybatis.plugin.ExamplePlugin"></plugin>-->
     <plugin interceptor="mybatis.plugin.ThresholdInterceptor">
       <property name="slowSqlTime" value="0"/>
     </plugin>
@@ -29,10 +30,10 @@
     <environment id="development">
       <transactionManager type="JDBC"/>
       <dataSource type="POOLED">
-        <property name="driver" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://192.168.179.111:3306/soar"/>
-        <property name="username" value="jf"/>
-        <property name="password" value="12345678"/>
+        <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
       </dataSource>
     </environment>
   </environments>
