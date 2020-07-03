@@ -13,4 +13,9 @@ ${}在动态解析的时候，会将我们传入的参数当做String字符串�
 select * from user where name = "dato"; 
 ```
 
+# 执行器体系
+- 流程
+sqlSession -> Executor -> statementHandler -> DB
+
+
 

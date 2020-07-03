@@ -6,4 +6,6 @@ package example.mapper;
 public interface UserMapper {
 
   User getUserByID(Integer id);
+
+  void updateName(User user);
 }

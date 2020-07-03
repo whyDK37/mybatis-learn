@@ -14,4 +14,9 @@
   <select id="getUserByID" parameterType="java.lang.String" resultMap="userMap" useCache="true">
         select * from `user` where id = #{id}
     </select>
+
+
+  <update id="updateName" parameterType="User" >
+       update `user` set name=#{name} where id = #{id}
+   </update>
 </mapper>
