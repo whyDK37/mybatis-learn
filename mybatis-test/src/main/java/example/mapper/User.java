@@ -15,40 +15,45 @@ public class User implements Serializable {
     return id;
   }
 
-  public void setId(int id) {
+  public User setId(int id) {
     this.id = id;
+    return this;
   }
 
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
+  public User setName(String name) {
     this.name = name;
+    return this;
   }
 
   public String getDept() {
     return dept;
   }
 
-  public void setDept(String dept) {
+  public User setDept(String dept) {
     this.dept = dept;
+    return this;
   }
 
   public String getPhone() {
     return phone;
   }
 
-  public void setPhone(String phone) {
+  public User setPhone(String phone) {
     this.phone = phone;
+    return this;
   }
 
   public String getWebsite() {
     return website;
   }
 
-  public void setWebsite(String website) {
+  public User setWebsite(String website) {
     this.website = website;
+    return this;
   }
 
   @Override

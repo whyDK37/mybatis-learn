@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.ibatis.executor.BatchExecutor;
 import org.apache.ibatis.executor.BatchResult;
 import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.executor.ReuseExecutor;
 import org.apache.ibatis.executor.SimpleExecutor;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.BoundSql;
@@ -54,34 +55,162 @@ class ExecutorTest {
         jdbcTransaction);
 
     final MappedStatement ms = sessionFactory.getConfiguration()
-        .getMappedStatement("example.mapper.UserMapper.getUserByID");
+        .getMappedStatement("dm.UserMapper.getUserByID");
     final BoundSql boundSql = ms.getBoundSql(1);
 
+    simpleExecutor.doQuery(ms, 1, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER, boundSql);
     simpleExecutor.doQuery(ms, 1, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER, boundSql);
 
   }
 
 
+  /**
+   * update 操作生效, 需要手动 flush query 等同于 simpleExecutor
+   *
+   * @throws SQLException
+   */
   @Test
-  void batch() throws SQLException {
+  void batchUpdate() throws SQLException {
 
     BatchExecutor batchExecutor = new BatchExecutor(configuration, jdbcTransaction);
 
+    final MappedStatement update = configuration
+        .getMappedStatement("dm.UserMapper.updateName");
+    final MappedStatement delete = configuration
+        .getMappedStatement("dm.UserMapper.deleteById");
+    final MappedStatement get = sessionFactory.getConfiguration()
+        .getMappedStatement("dm.UserMapper.getUserByID");
+    final MappedStatement insertUser = sessionFactory.getConfiguration()
+        .getMappedStatement("dm.UserMapper.insertUser");
+
+    // query
+    batchExecutor.doUpdate(insertUser, new User().setName("" + new Date()));
+    batchExecutor.doUpdate(insertUser, new User().setName("" + new Date()));
+
+    // batch update
+    User user = new User();
+    user.setId(2);
+    user.setName("" + new Date());
+    batchExecutor.doUpdate(update, user);
+
+    user.setId(3);
+    batchExecutor.doUpdate(update, user);
+
+    batchExecutor.doUpdate(insertUser, new User().setName("" + new Date()));
+
+    //
+    final List<BatchResult> batchResults = batchExecutor.flushStatements(false);
+    jdbcTransaction.commit();
+    printBatchResult(batchResults);
+
+  }
+
+  @Test
+  void batchInsert() throws SQLException {
+
+    BatchExecutor batchExecutor = new BatchExecutor(configuration, jdbcTransaction);
+
+    final MappedStatement insert = configuration
+        .getMappedStatement("why.demo.UserMapper.insertUser");
+
+    User user = new User();
+    user.setName("" + new Date());
+    batchExecutor.doUpdate(insert, user);
+    batchExecutor.doUpdate(insert, user);
+
+    //
+    final List<BatchResult> batchResults = batchExecutor.flushStatements(false);
+    jdbcTransaction.commit();
+    printBatchResult(batchResults);
+  }
+
+  private void printBatchResult(List<BatchResult> batchResults) {
+    for (int i = 0; i < batchResults.size(); i++) {
+      System.out.println(String.format("第 %d 个结果", i + 1));
+      BatchResult batchResult = batchResults.get(i);
+      System.out.println(Arrays.toString(batchResult.getUpdateCounts()));
+    }
+  }
+
+  @Test
+  void batchDelete() throws SQLException {
+
+    BatchExecutor batchExecutor = new BatchExecutor(configuration, jdbcTransaction);
+
+    final MappedStatement delete = configuration
+        .getMappedStatement("why.demo.UserMapper.deleteById");
+
+    User user = new User();
+    user.setId((int) System.currentTimeMillis());
+    batchExecutor.doUpdate(delete, user);
+
+    user.setId((int) System.currentTimeMillis());
+    batchExecutor.doUpdate(delete, user);
+
+    //
+    final List<BatchResult> batchResults = batchExecutor.flushStatements(false);
+    jdbcTransaction.commit();
+    printBatchResult(batchResults);
+
+  }
+
+  /**
+   * 同一会话，相同的 sql 只有一个 prepareStatement
+   *
+   * @throws SQLException
+   */
+  @Test
+  void reuseUpdate() throws SQLException {
+
+    ReuseExecutor reuseExecutor = new ReuseExecutor(configuration, jdbcTransaction);
+
     final MappedStatement ms = configuration
-        .getMappedStatement("example.mapper.UserMapper.updateName");
+        .getMappedStatement("why.demo.UserMapper.updateName");
 
     User user = new User();
     user.setId(2);
     user.setName("" + new Date());
+    reuseExecutor.doUpdate(ms, user);
 
-    batchExecutor.doUpdate(ms, user);
-    batchExecutor.doUpdate(ms, user);
+    user.setId(3);
+    reuseExecutor.doUpdate(ms, user);
 
     //
-    final List<BatchResult> batchResults = batchExecutor.flushStatements(false);
-    for (BatchResult batchResult : batchResults) {
-      System.out.println(Arrays.toString(batchResult.getUpdateCounts()));
-    }
+    jdbcTransaction.commit();
+  }
+
+  @Test
+  void reuseSelect() throws SQLException {
+
+    ReuseExecutor reuseExecutor = new ReuseExecutor(sessionFactory.getConfiguration(),
+        jdbcTransaction);
+
+    final MappedStatement ms = sessionFactory.getConfiguration()
+        .getMappedStatement("dm.UserMapper.getUserByID");
+    final BoundSql boundSql = ms.getBoundSql(1);
+
+    reuseExecutor.doQuery(ms, 1, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER, boundSql);
+    reuseExecutor.doQuery(ms, 1, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER, boundSql);
+  }
+
+  @Test
+  void reuse() throws SQLException {
+
+    ReuseExecutor reuseExecutor = new ReuseExecutor(configuration, jdbcTransaction);
+
+    final MappedStatement ms = configuration
+        .getMappedStatement("why.demo.UserMapper.updateName");
+
+    User user = new User();
+    user.setId(2);
+    user.setName("" + new Date());
+    reuseExecutor.doUpdate(ms, user);
+
+    user.setId(3);
+    reuseExecutor.doUpdate(ms, user);
+
+    //
+    jdbcTransaction.commit();
   }
 
 }
