@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 public class SelectExample {
 
@@ -39,16 +38,18 @@ public class SelectExample {
       String sql = "select * from user where id = ?";
       pstmt = conn.prepareStatement(sql);
 
-
 // Set the variables
       pstmt.setInt(1, 1);
 
       final ResultSet rs = pstmt.executeQuery();
-      while(rs.next()){
+      while (rs.next()) {
         //Retrieve by column name
         final ResultSetMetaData rsMetaData = rs.getMetaData();
-        rsMetaData.getColumnTypeName(1);
-        rsMetaData.getColumnClassName(1);
+        System.out.println(rsMetaData.getColumnName(3));
+        System.out.println(rsMetaData.getColumnClassName(3));
+        System.out.println(rs.getInt(3));
+        System.out.println(rs.getBoolean(3));
+        System.out.println(rs.getByte(3));
       }
       pstmt.close();
       conn.close();
