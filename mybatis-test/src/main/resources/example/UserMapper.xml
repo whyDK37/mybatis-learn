@@ -6,8 +6,8 @@
   <cache/>
   <!-- 自定义返回结果集 -->
   <resultMap id="userMap" type="User">
-    <id property="id" column="id" javaType="java.lang.Integer"></id>
-    <result property="name" column="name" javaType="java.lang.String"></result>
+    <id property="id" column="id" javaType="java.lang.Integer"/>
+    <result property="name" column="name" javaType="java.lang.String"/>
   </resultMap>
 
 
