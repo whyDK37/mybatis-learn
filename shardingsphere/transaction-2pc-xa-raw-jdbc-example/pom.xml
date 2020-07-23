@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>shardingsphere</artifactId>
+    <groupId>search-shardingsphere</groupId>
+    <version>1.0.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>transaction-2pc-xa-raw-jdbc-example</artifactId>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>search-shardingsphere</groupId>
+      <artifactId>example-raw-jdbc</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shardingsphere</groupId>
+      <artifactId>sharding-jdbc-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shardingsphere</groupId>
+      <artifactId>sharding-transaction-xa-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+    </dependency>
+  </dependencies>
+</project>

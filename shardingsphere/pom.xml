@@ -2,47 +2,162 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <artifactId>mybatis-learn</artifactId>
-    <groupId>search-mybatis</groupId>
-    <version>3.X.X</version>
-  </parent>
+
   <modelVersion>4.0.0</modelVersion>
+  <groupId>search-shardingsphere</groupId>
   <artifactId>shardingsphere</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <modules>
+    <module>example-api</module>
+    <module>config-utility</module>
+    <module>example-raw-jdbc</module>
+    <module>transaction-2pc-xa-raw-jdbc-example</module>
+    <module>demo</module>
+  </modules>
 
   <properties>
+    <java.version>1.8</java.version>
     <shardingsphere.version>4.1.1</shardingsphere.version>
+    <shardingsphere.spi.impl.version>4.1.1</shardingsphere.spi.impl.version>
+    <spring-framework.version>4.3.20.RELEASE</spring-framework.version>
+
+    <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+    <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
+    <maven-jar-plugin.version>2.6</maven-jar-plugin.version>
+    <maven-source-plugin.version>2.4</maven-source-plugin.version>
+
+    <javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
   </properties>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.shardingsphere</groupId>
-      <artifactId>sharding-jdbc-core</artifactId>
-      <version>${shardingsphere.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.shardingsphere</groupId>
-      <artifactId>sharding-transaction-xa-core</artifactId>
-      <version>${shardingsphere.version}</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.12</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-      <version>3.4.5</version>
-    </dependency>
 
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.20</version>
-    </dependency>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.shardingsphere</groupId>
+        <artifactId>sharding-core-api</artifactId>
+        <version>${shardingsphere.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.shardingsphere</groupId>
+        <artifactId>sharding-jdbc-core</artifactId>
+        <version>${shardingsphere.version}</version>
+      </dependency>
+<!--      <dependency>-->
+<!--        <groupId>org.apache.shardingsphere</groupId>-->
+<!--        <artifactId>sharding-jdbc-orchestration</artifactId>-->
+<!--        <version>${shardingsphere.version}</version>-->
+<!--      </dependency>-->
+      <dependency>
+        <groupId>org.apache.shardingsphere</groupId>
+        <artifactId>sharding-transaction-core</artifactId>
+        <version>${shardingsphere.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.shardingsphere</groupId>
+        <artifactId>sharding-transaction-xa-core</artifactId>
+        <version>${shardingsphere.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.shardingsphere</groupId>
+        <artifactId>sharding-transaction-base-seata-at</artifactId>
+        <version>${shardingsphere.version}</version>
+      </dependency>
+<!--      <dependency>-->
+<!--        <groupId>org.apache.shardingsphere</groupId>-->
+<!--        <artifactId>sharding-jdbc-spring-boot-starter</artifactId>-->
+<!--        <version>${shardingsphere.version}</version>-->
+<!--      </dependency>-->
+<!--      <dependency>-->
+<!--        <groupId>org.apache.shardingsphere</groupId>-->
+<!--        <artifactId>sharding-jdbc-orchestration-spring-boot-starter</artifactId>-->
+<!--        <version>${shardingsphere.version}</version>-->
+<!--      </dependency>-->
+<!--      <dependency>-->
+<!--        <groupId>org.apache.shardingsphere</groupId>-->
+<!--        <artifactId>sharding-jdbc-spring-namespace</artifactId>-->
+<!--        <version>${shardingsphere.version}</version>-->
+<!--      </dependency>-->
+<!--      <dependency>-->
+<!--        <groupId>org.apache.shardingsphere</groupId>-->
+<!--        <artifactId>sharding-jdbc-orchestration-spring-namespace</artifactId>-->
+<!--        <version>${shardingsphere.version}</version>-->
+<!--      </dependency>-->
+<!--      <dependency>-->
+<!--        <groupId>org.apache.shardingsphere</groupId>-->
+<!--        <artifactId>sharding-orchestration-reg-zookeeper-curator</artifactId>-->
+<!--        <version>${shardingsphere.version}</version>-->
+<!--      </dependency>-->
+<!--      <dependency>-->
+<!--        <groupId>io.shardingsphere</groupId>-->
+<!--        <artifactId>sharding-orchestration-reg-etcd</artifactId>-->
+<!--        <version>${shardingsphere.spi.impl.version}</version>-->
+<!--      </dependency>-->
 
-  </dependencies>
 
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>${spring-framework.version}</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.12</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.zaxxer</groupId>
+        <artifactId>HikariCP</artifactId>
+        <version>3.4.5</version>
+      </dependency>
+
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.20</version>
+      </dependency>
+    </dependencies>
+
+  </dependencyManagement>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <testSource>${java.version}</testSource>
+          <testTarget>${java.version}</testTarget>
+        </configuration>
+        <version>${maven-compiler-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>${maven-source-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
