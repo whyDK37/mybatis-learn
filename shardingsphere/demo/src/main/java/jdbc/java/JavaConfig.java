@@ -1,8 +1,6 @@
 package jdbc.java;//package jdbc.java;
 
-import com.google.common.collect.Lists;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -10,11 +8,8 @@ import javax.sql.DataSource;
 import org.apache.shardingsphere.api.config.sharding.KeyGeneratorConfiguration;
 import org.apache.shardingsphere.api.config.sharding.ShardingRuleConfiguration;
 import org.apache.shardingsphere.api.config.sharding.TableRuleConfiguration;
-import org.apache.shardingsphere.api.config.sharding.strategy.ComplexShardingStrategyConfiguration;
 import org.apache.shardingsphere.api.config.sharding.strategy.InlineShardingStrategyConfiguration;
 import org.apache.shardingsphere.api.config.sharding.strategy.StandardShardingStrategyConfiguration;
-import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingAlgorithm;
-import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingValue;
 import org.apache.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
 
 public class JavaConfig {
@@ -23,11 +18,11 @@ public class JavaConfig {
     ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
     shardingRuleConfig.getTableRuleConfigs().add(getUserTableRuleConfiguration());
     shardingRuleConfig.getTableRuleConfigs().add(getOrderItemTableRuleConfiguration());
-    shardingRuleConfig.getBindingTableGroups().add("user");
+    shardingRuleConfig.getBindingTableGroups().add("lg_user");
     shardingRuleConfig.getBroadcastTables().add("t_config");
-//    shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "ds${user_id % 2}"));
-    shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(
-        new StandardShardingStrategyConfiguration("id, name", new ModuloShardingTableAlgorithm()));
+    shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "ds${user_id % 2}"));
+//    shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(
+//        new StandardShardingStrategyConfiguration("id, name", new ModuloShardingTableAlgorithm()));
     shardingRuleConfig.setDefaultTableShardingStrategyConfig(
         new StandardShardingStrategyConfiguration("id", new ModuloShardingTableAlgorithm()));
     return ShardingDataSourceFactory
@@ -40,7 +35,7 @@ public class JavaConfig {
   }
 
   TableRuleConfiguration getUserTableRuleConfiguration() {
-    TableRuleConfiguration result = new TableRuleConfiguration("user", "ds${0..1}.user");
+    TableRuleConfiguration result = new TableRuleConfiguration("lg_user", "ds${0..1}.user");
     result.setKeyGeneratorConfig(getKeyGeneratorConfiguration());
 
     result.setDatabaseShardingStrategyConfig(
@@ -64,7 +59,7 @@ public class JavaConfig {
   }
 
   TableRuleConfiguration getOrderItemTableRuleConfiguration() {
-    TableRuleConfiguration result = new TableRuleConfiguration("t_order_item",
+    TableRuleConfiguration result = new TableRuleConfiguration("lg_t_order_item",
         "ds${0..1}.t_order_item${0..1}");
     return result;
   }
