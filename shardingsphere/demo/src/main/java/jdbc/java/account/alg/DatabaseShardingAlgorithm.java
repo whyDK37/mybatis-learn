@@ -1,4 +1,4 @@
-package jdbc.java.alg;
+package jdbc.java.account.alg;
 
 import java.util.Collection;
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;

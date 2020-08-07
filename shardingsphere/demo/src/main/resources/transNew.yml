@@ -1,0 +1,43 @@
+dataSources:
+  ds0: !!org.apache.commons.dbcp.BasicDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.179.111:3306/lp_transnew_sharding_0?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+    username: jf
+    password: 12345678
+  ds1: !!org.apache.commons.dbcp.BasicDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.179.111:3306/lp_transnew_sharding_2?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+    username: jf
+    password: 12345678
+  ds2: !!org.apache.commons.dbcp.BasicDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.179.111:3306/lp_transnew_sharding_2?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+    username: jf
+    password: 12345678
+  ds3: !!org.apache.commons.dbcp.BasicDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.179.111:3306/lp_transnew_sharding_3?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+    username: jf
+    password: 12345678
+
+shardingRule:
+  tables:
+    trans_standard_new:
+      actualDataNodes: ds$->{0..3}.lp_transnew_new_$->{0..3}
+      databaseStrategy:
+        inline:
+          shardingColumn: seller_no
+          algorithmExpression: ds$->{Math.abs(seller_no.toUpperCase().hashCode()) % 4}
+      tableStrategy:
+        inline:
+          shardingColumn: seller_no
+          algorithmExpression: lp_transnew_new_$->{(Math.abs(seller_no.toUpperCase().hashCode()) % 16).intdiv(4)}
+      keyGenerator:
+        type: SNOWFLAKE
+        column: order_id
+
+  defaultTableStrategy:
+    none:
+
+props:
+  sql.show: true

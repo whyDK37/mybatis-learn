@@ -1,5 +1,7 @@
-package jdbc.java;//package jdbc.java;
+package jdbc.java.account;//package jdbc.java;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -9,21 +11,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import javax.sql.DataSource;
-import jdbc.java.alg.DatabaseShardingAlgorithm;
-import jdbc.java.alg.TableShardingAlgorithm;
+import jdbc.java.DataSourceUtil;
+import jdbc.java.account.alg.DatabaseShardingAlgorithm;
+import jdbc.java.account.alg.TableShardingAlgorithm;
 import org.apache.shardingsphere.api.config.sharding.KeyGeneratorConfiguration;
 import org.apache.shardingsphere.api.config.sharding.ShardingRuleConfiguration;
 import org.apache.shardingsphere.api.config.sharding.TableRuleConfiguration;
 import org.apache.shardingsphere.api.config.sharding.strategy.StandardShardingStrategyConfiguration;
 import org.apache.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
+import org.apache.shardingsphere.shardingjdbc.api.yaml.YamlShardingDataSourceFactory;
 
-public class JavaAccountConfig {
+public class AccountYmlConfig {
 
-  public static void main(String[] args) throws SQLException {
-    JavaAccountConfig javaAccountConfig = new JavaAccountConfig();
-    final DataSource shardingDataSource = javaAccountConfig.getShardingDataSource();
+  public static void main(String[] args) throws SQLException, IOException {
+    File yamlFile = new File(
+        "E:\\workspace\\mybatis-learn\\shardingsphere\\demo\\src\\main\\resources\\account.yml");
+    DataSource dataSource = YamlShardingDataSourceFactory.createDataSource(yamlFile);
 
-    final Connection conn = shardingDataSource.getConnection();
+    final Connection conn = dataSource.getConnection();
     conn.setAutoCommit(true);
 
     System.out.println("Creating statement...");

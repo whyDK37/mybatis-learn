@@ -1,0 +1,43 @@
+dataSources:
+  ds0: !!org.apache.commons.dbcp2.BasicDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.179.111:3306/lbs_sharding_00?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+    username: jf
+    password: 12345678
+  ds1: !!org.apache.commons.dbcp2.BasicDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.179.111:3306/lbs_sharding_01?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+    username: jf
+    password: 12345678
+  ds2: !!org.apache.commons.dbcp2.BasicDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.179.111:3306/lbs_sharding_02?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+    username: jf
+    password: 12345678
+  ds3: !!org.apache.commons.dbcp2.BasicDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.179.111:3306/lbs_sharding_03?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+    username: jf
+    password: 12345678
+
+shardingRule:
+  tables:
+    trans_account:
+      actualDataNodes: lbs_sharding_00.trans_account_202001
+      databaseStrategy:
+        complex:
+          shardingColumns: seller_no
+          algorithmClassName: jdbc.java.account.alg.DatabaseShardingAlgorithm
+      tableStrategy:
+        complex:
+          shardingColumns: exp_date
+          algorithmClassName: jdbc.java.account.alg.TableShardingAlgorithm
+      keyGenerator:
+        type: SNOWFLAKE
+        column: order_id
+
+  defaultTableStrategy:
+    none:
+
+props:
+  sql.show: true
