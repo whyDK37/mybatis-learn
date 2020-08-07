@@ -2,10 +2,18 @@ package jdbc.java.account.alg;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Collections;
+import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingAlgorithm;
+import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingValue;
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
 
-public class TableShardingAlgorithm implements PreciseShardingAlgorithm<String> {
+public class TableShardingAlgorithm implements PreciseShardingAlgorithm<String>,
+    ComplexKeysShardingAlgorithm<String> {
+
+  public TableShardingAlgorithm() {
+    System.out.println();
+  }
 
   @Override
   public String doSharding(Collection<String> collection,
@@ -28,4 +36,15 @@ public class TableShardingAlgorithm implements PreciseShardingAlgorithm<String> 
 
   }
 
+  @Override
+  public Collection<String> doSharding(Collection<String> availableTargetNames,
+      ComplexKeysShardingValue<String> shardingValue) {
+    String tb_name = shardingValue.getLogicTableName() + "_";
+    String ym = new SimpleDateFormat("yyyyMM")
+        .format(shardingValue.getColumnNameAndRangeValuesMap().get("exp_date"));
+    tb_name = tb_name + ym;
+    System.out.println("tb_name:" + tb_name);
+
+    return Collections.singleton(tb_name);
+  }
 }

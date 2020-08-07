@@ -17,5 +17,8 @@ select * from user where name = "dato";
 - 流程
 sqlSession -> Executor -> statementHandler -> DB
 
+# sharding
+https://www.bookstack.cn/read/ShardingSphere-4.x-zh/f102561b8187d169.md
+
 
 
