@@ -111,7 +111,7 @@ class ExecutorTest {
     BatchExecutor batchExecutor = new BatchExecutor(configuration, jdbcTransaction);
 
     final MappedStatement insert = configuration
-        .getMappedStatement("why.demo.UserMapper.insertUser");
+        .getMappedStatement("dm.UserMapper.insertUser");
 
     User user = new User();
     user.setName("" + new Date());
@@ -177,6 +177,23 @@ class ExecutorTest {
 
     //
     jdbcTransaction.commit();
+  }
+
+  @Test
+  void getAll() throws SQLException {
+
+    ReuseExecutor reuseExecutor = new ReuseExecutor(sessionFactory.getConfiguration(),
+        jdbcTransaction);
+
+    final MappedStatement ms = sessionFactory.getConfiguration()
+        .getMappedStatement("dm.UserMapper.getAll");
+    final BoundSql boundSql = ms.getBoundSql(null);
+
+    List<Object> objects = reuseExecutor
+        .doQuery(ms, null, new RowBounds(0, 2), Executor.NO_RESULT_HANDLER, boundSql);
+    for (Object object : objects) {
+      System.out.println(object);
+    }
   }
 
   @Test

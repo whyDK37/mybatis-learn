@@ -11,22 +11,25 @@ import org.apache.shardingsphere.api.config.sharding.TableRuleConfiguration;
 import org.apache.shardingsphere.api.config.sharding.strategy.InlineShardingStrategyConfiguration;
 import org.apache.shardingsphere.api.config.sharding.strategy.StandardShardingStrategyConfiguration;
 import org.apache.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
+import org.apache.shardingsphere.underlying.common.config.properties.ConfigurationPropertyKey;
 
 public class JavaConfig {
 
   public DataSource getShardingDataSource() throws SQLException {
     ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
     shardingRuleConfig.getTableRuleConfigs().add(getUserTableRuleConfiguration());
-    shardingRuleConfig.getTableRuleConfigs().add(getOrderItemTableRuleConfiguration());
-    shardingRuleConfig.getBindingTableGroups().add("lg_user");
-    shardingRuleConfig.getBroadcastTables().add("t_config");
-    shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "ds${user_id % 2}"));
+//    shardingRuleConfig.getTableRuleConfigs().add(getOrderItemTableRuleConfiguration());
+//    shardingRuleConfig.getBindingTableGroups().add("lg_user");
+//    shardingRuleConfig.getBroadcastTables().add("t_config");
+//    shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "ds${user_id % 2}"));
 //    shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(
 //        new StandardShardingStrategyConfiguration("id, name", new ModuloShardingTableAlgorithm()));
     shardingRuleConfig.setDefaultTableShardingStrategyConfig(
         new StandardShardingStrategyConfiguration("id", new ModuloShardingTableAlgorithm()));
+    Properties props = new Properties();
+    props.put(ConfigurationPropertyKey.SQL_SHOW.getKey(), String.valueOf(Boolean.TRUE));
     return ShardingDataSourceFactory
-        .createDataSource(createDataSourceMap(), shardingRuleConfig, new Properties());
+        .createDataSource(createDataSourceMap(), shardingRuleConfig, props);
   }
 
   private static KeyGeneratorConfiguration getKeyGeneratorConfiguration() {

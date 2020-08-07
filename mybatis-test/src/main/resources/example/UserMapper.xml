@@ -17,6 +17,10 @@
   <select id="getUserByID" parameterType="java.lang.Integer" resultMap="userMap" useCache="true">
         select * from `user` where id = #{id}
   </select>
+
+  <select id="getAll" resultMap="userMap" useCache="true">
+        select * from `user`
+  </select>
   <update id="updateName" parameterType="User">
        update `user` set name=#{name} where id = #{id}
    </update>
