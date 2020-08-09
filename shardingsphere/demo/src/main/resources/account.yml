@@ -13,7 +13,7 @@ dataSources:
 shardingRule:
   tables:
     trans_account:
-      actualDataNodes: ds$->{['00','01']}.trans_account_$->{['202007','202008']}
+      actualDataNodes: ds$->{['00','01']}.trans_account_$->{2019..2020}$->{['07','08']}
       databaseStrategy:
         inline:
           shardingColumn: seller_no
