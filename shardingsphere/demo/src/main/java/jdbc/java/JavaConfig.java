@@ -37,12 +37,19 @@ public class JavaConfig {
     return result;
   }
 
+  TableRuleConfiguration getOrderTableRuleConfiguration() {
+    TableRuleConfiguration result = new TableRuleConfiguration("t_order", "ds${0..1}.t_order${0..1}");
+    result.setKeyGeneratorConfig(getKeyGeneratorConfiguration());
+    return result;
+  }
+
   TableRuleConfiguration getUserTableRuleConfiguration() {
-    TableRuleConfiguration result = new TableRuleConfiguration("lg_user", "ds${0..1}.user");
+    TableRuleConfiguration result = new TableRuleConfiguration("user", "ds${0..1}.user_0");
     result.setKeyGeneratorConfig(getKeyGeneratorConfiguration());
 
     result.setDatabaseShardingStrategyConfig(
-        new InlineShardingStrategyConfiguration("id", "ds${id % 2}"));
+        new InlineShardingStrategyConfiguration("id", "ds${jdbc.java.account.alg.FormatUtils.keepFigures(id % 2,1)}"));
+    result.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "ds${id % 2}"));
 //    result.setDatabaseShardingStrategyConfig(
 //        new ComplexShardingStrategyConfiguration("id, name", new ComplexKeysShardingAlgorithm() {
 //
