@@ -19,9 +19,7 @@ shardingRule:
           shardingColumn: seller_no
           algorithmExpression: ds$->{jdbc.java.account.alg.FormatUtils.keepFigures(Math.abs(seller_no.toUpperCase().hashCode()) % 4,2)}
       tableStrategy:
-        inline:
-          shardingColumn: exp_date
-          algorithmExpression: trans_account_$->{jdbc.java.account.alg.FormatUtils.formatDate(exp_date,'yyyyMM')}
+        none:
       keyGenerator:
         type: SNOWFLAKE
         column: order_id

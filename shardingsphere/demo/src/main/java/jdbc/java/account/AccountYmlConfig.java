@@ -18,7 +18,7 @@ public class AccountYmlConfig {
 
   public static void main(String[] args) throws SQLException, IOException {
     File yamlFile = new File(
-        "D:\\workspace\\mygit\\mybatis-learn\\shardingsphere\\demo\\src\\main\\resources\\account.yml");
+        "E:\\workspace\\mybatis-learn\\shardingsphere\\demo\\src\\main\\resources\\account.yml");
 
     YamlRootShardingConfiguration config = YamlEngine
         .unmarshal(yamlFile, YamlRootShardingConfiguration.class,
