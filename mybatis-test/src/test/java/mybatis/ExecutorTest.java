@@ -1,10 +1,11 @@
 package mybatis;
 
+import static mybatis.TestUtils.printBatchResult;
+
 import example.mapper.User;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.executor.BatchExecutor;
@@ -55,7 +56,7 @@ class ExecutorTest {
         jdbcTransaction);
 
     final MappedStatement ms = sessionFactory.getConfiguration()
-        .getMappedStatement("dm.UserMapper.getUserByID");
+        .getMappedStatement("example.mapper.UserMapper.getUserByID");
     final BoundSql boundSql = ms.getBoundSql(1);
 
     simpleExecutor.doQuery(ms, 1, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER, boundSql);
@@ -75,13 +76,13 @@ class ExecutorTest {
     BatchExecutor batchExecutor = new BatchExecutor(configuration, jdbcTransaction);
 
     final MappedStatement update = configuration
-        .getMappedStatement("dm.UserMapper.updateName");
+        .getMappedStatement("example.mapper.UserMapper.updateName");
     final MappedStatement delete = configuration
-        .getMappedStatement("dm.UserMapper.deleteById");
+        .getMappedStatement("example.mapper.UserMapper.deleteById");
     final MappedStatement get = sessionFactory.getConfiguration()
-        .getMappedStatement("dm.UserMapper.getUserByID");
+        .getMappedStatement("example.mapper.UserMapper.getUserByID");
     final MappedStatement insertUser = sessionFactory.getConfiguration()
-        .getMappedStatement("dm.UserMapper.insertUser");
+        .getMappedStatement("example.mapper.UserMapper.insertUser");
 
     // query
     batchExecutor.doUpdate(insertUser, new User().setName("" + new Date()));
@@ -111,7 +112,7 @@ class ExecutorTest {
     BatchExecutor batchExecutor = new BatchExecutor(configuration, jdbcTransaction);
 
     final MappedStatement insert = configuration
-        .getMappedStatement("dm.UserMapper.insertUser");
+        .getMappedStatement("example.mapper.UserMapper.insertUser");
 
     User user = new User();
     user.setName("" + new Date());
@@ -124,13 +125,6 @@ class ExecutorTest {
     printBatchResult(batchResults);
   }
 
-  private void printBatchResult(List<BatchResult> batchResults) {
-    for (int i = 0; i < batchResults.size(); i++) {
-      System.out.println(String.format("第 %d 个结果", i + 1));
-      BatchResult batchResult = batchResults.get(i);
-      System.out.println(Arrays.toString(batchResult.getUpdateCounts()));
-    }
-  }
 
   @Test
   void batchDelete() throws SQLException {
@@ -186,7 +180,7 @@ class ExecutorTest {
         jdbcTransaction);
 
     final MappedStatement ms = sessionFactory.getConfiguration()
-        .getMappedStatement("dm.UserMapper.getAll");
+        .getMappedStatement("example.mapper.UserMapper.getAll");
     final BoundSql boundSql = ms.getBoundSql(null);
 
     List<Object> objects = reuseExecutor
@@ -203,7 +197,7 @@ class ExecutorTest {
         jdbcTransaction);
 
     final MappedStatement ms = sessionFactory.getConfiguration()
-        .getMappedStatement("dm.UserMapper.getUserByID");
+        .getMappedStatement("example.mapper.UserMapper.getUserByID");
     final BoundSql boundSql = ms.getBoundSql(1);
 
     reuseExecutor.doQuery(ms, 1, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER, boundSql);
