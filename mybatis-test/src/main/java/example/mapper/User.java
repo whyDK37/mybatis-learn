@@ -5,7 +5,6 @@ import java.io.Serializable;
 public class User implements Serializable {
 
   public User() {
-    System.out.println("create user");
   }
 
   private static final long serialVersionUID = 8104961490512068314L;
