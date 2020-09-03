@@ -54,7 +54,7 @@ public class JavaAccountConfig {
    */
   TableRuleConfiguration getAccountConf() {
     TableRuleConfiguration result = new TableRuleConfiguration("trans_account",
-        "lbs_sharding_00.trans_account_202001");
+        "ds$->{0..3}.trans_account");
     result.setKeyGeneratorConfig(getKeyGeneratorConfiguration());
     // 按月份分表
     result.setTableShardingStrategyConfig(
@@ -67,13 +67,13 @@ public class JavaAccountConfig {
 
   public Map<String, DataSource> createDataSourceMap() {
     Map<String, DataSource> result = new HashMap<>();
-    result.put("lbs_sharding_00", DataSourceUtil
+    result.put("ds0", DataSourceUtil
         .createDataSource("192.168.179.111", "jf", "12345678", 3306, "lbs_sharding_00"));
-    result.put("lbs_sharding_01", DataSourceUtil
+    result.put("ds1", DataSourceUtil
         .createDataSource("192.168.179.111", "jf", "12345678", 3306, "lbs_sharding_01"));
-    result.put("lbs_sharding_02", DataSourceUtil
+    result.put("ds2", DataSourceUtil
         .createDataSource("192.168.179.111", "jf", "12345678", 3306, "lbs_sharding_02"));
-    result.put("lbs_sharding_03", DataSourceUtil
+    result.put("ds3", DataSourceUtil
         .createDataSource("192.168.179.111", "jf", "12345678", 3306, "lbs_sharding_03"));
     return result;
   }

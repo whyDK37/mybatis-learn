@@ -1,10 +1,10 @@
 dataSources:
-  ds00: !!com.zaxxer.hikari.HikariDataSource
+  ds0: !!com.zaxxer.hikari.HikariDataSource
     poolName: account
     jdbcUrl: jdbc:mysql://localhost:3306/ds0?serverTimezone=UTC&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
     username: root
     password: root
-  ds01: !!com.zaxxer.hikari.HikariDataSource
+  ds1: !!com.zaxxer.hikari.HikariDataSource
     poolName: account
     jdbcUrl: jdbc:mysql://localhost:3306/ds1?serverTimezone=UTC&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
     username: root
@@ -13,13 +13,15 @@ dataSources:
 shardingRule:
   tables:
     trans_account:
-      actualDataNodes: ds$->{['00','01']}.trans_account_$->{2019..2020}$->{['07','08']}
+      actualDataNodes: ds$->{0..1}.trans_account_$->{2019..2020}$->{['07','08']}
       databaseStrategy:
         inline:
           shardingColumn: seller_no
-          algorithmExpression: ds$->{jdbc.java.account.alg.FormatUtils.keepFigures(Math.abs(seller_no.toUpperCase().hashCode()) % 4,2)}
+          algorithmExpression: ds$->{Math.abs(seller_no.toUpperCase().hashCode()) % 2}
       tableStrategy:
-        none:
+        standard:
+          shardingColumn: exp_date
+          preciseAlgorithmClassName: jdbc.java.account.alg.TableShardingAlgorithm
       keyGenerator:
         type: SNOWFLAKE
         column: order_id
