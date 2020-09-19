@@ -1,5 +1,6 @@
 package mybatis;
 
+import example.mapper.Address;
 import example.mapper.User;
 import org.apache.ibatis.reflection.DefaultReflectorFactory;
 import org.apache.ibatis.reflection.MetaObject;
@@ -10,18 +11,26 @@ import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
 import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 import org.junit.jupiter.api.Test;
 
-public class MetaObjectTest {
+class MetaObjectTest {
 
   protected ReflectorFactory reflectorFactory = new DefaultReflectorFactory();
   protected ObjectFactory objectFactory = new DefaultObjectFactory();
   protected ObjectWrapperFactory objectWrapperFactory = new DefaultObjectWrapperFactory();
 
   @Test
-  public void test() {
+  void test() {
+    User user = new User();
+    user.setAddress(new Address("bj"));
+    user.setName("why");
+
     MetaObject metaObject = MetaObject
-        .forObject(new User(), objectFactory, objectWrapperFactory, reflectorFactory);
+        .forObject(user, objectFactory, objectWrapperFactory, reflectorFactory);
     System.out.println(metaObject.getGetterType("name"));
-    System.out.println(metaObject.getSetterType("name"));
+    System.out.println(metaObject.getValue("name"));
+    System.out.println(metaObject.getSetterType("address"));
+    System.out.println(metaObject.getValue("address"));
+    System.out.println(metaObject.getSetterType("address.city"));
+    System.out.println(metaObject.getValue("address.city"));
   }
 
 }

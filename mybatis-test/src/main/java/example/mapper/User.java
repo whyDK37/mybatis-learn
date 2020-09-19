@@ -14,6 +14,8 @@ public class User implements Serializable {
   private String phone;
   private String website;
 
+  private Address address;
+
   public int getId() {
     return id;
   }
@@ -59,15 +61,26 @@ public class User implements Serializable {
     return this;
   }
 
+  public Address getAddress() {
+    return address;
+  }
+
+  public User setAddress(Address address) {
+    this.address = address;
+    return this;
+  }
+
   @Override
   public String toString() {
-    return "User{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", dept='" + dept + '\'' +
-        ", phone='" + phone + '\'' +
-        ", website='" + website + '\'' +
-        '}';
+    final StringBuilder sb = new StringBuilder("User{");
+    sb.append("id=").append(id);
+    sb.append(", name='").append(name).append('\'');
+    sb.append(", dept='").append(dept).append('\'');
+    sb.append(", phone='").append(phone).append('\'');
+    sb.append(", website='").append(website).append('\'');
+    sb.append(", address=").append(address);
+    sb.append('}');
+    return sb.toString();
   }
 
 } 

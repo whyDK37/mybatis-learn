@@ -20,7 +20,7 @@ shardingRule:
           algorithmExpression: ds$->{Math.abs(seller_no.toUpperCase().hashCode()) % 2}
       tableStrategy:
         standard:
-          shardingColumn: exp_date
+          shardingColumn: exp_date`
           preciseAlgorithmClassName: jdbc.java.account.alg.TableShardingAlgorithm
       keyGenerator:
         type: SNOWFLAKE
