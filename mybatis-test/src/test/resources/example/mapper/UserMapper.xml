@@ -5,59 +5,59 @@
 <mapper namespace="example.mapper.UserMapper">
   <cache/>
   <!-- 自定义返回结果集 -->
-  <resultMap id="userMap" type="User">
-    <id property="id" column="id" javaType="java.lang.Integer"/>
-    <result property="name" column="name" javaType="java.lang.String"/>
-  </resultMap>
+  <delete id="deleteById" parameterType="User">
+       delete from `user` where id = #{id}
+   </delete>
 
 
-  <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertUser" keyProperty="id" parameterType="User" useGeneratedKeys="true">
     insert into  `user` (name) values(#{name});
   </insert>
-  <insert id="insertUsers" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertUsers" keyProperty="id" parameterType="User" useGeneratedKeys="true">
     insert into `user` (name) values
-    <foreach collection="list" item="item" index="index" separator=",">
+    <foreach collection="list" index="index" item="item" separator=",">
       (#{item.name})
     </foreach>
   </insert>
 
   <insert id="insertUserUseSelectKey" parameterType="User">
-    <selectKey resultType="java.lang.Integer" keyProperty="id">
+    <selectKey keyProperty="id" resultType="java.lang.Integer">
       select LAST_INSERT_ID()
     </selectKey>
     insert into `user` (id,name) values(#{id},#{name});
   </insert>
   <insert id="insertUsersUseSelectKey" parameterType="User">
-    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
-      select LAST_INSERT_ID()
-    </selectKey>
-    insert into `user` (id,name)
-    values
-    <foreach collection="list" item="item" index="index" separator=",">
+    <foreach collection="list" index="index" item="item" separator=",">
       (#{item.id},#{item.name})
     </foreach>
+    insert into `user` (id,name)
+    values
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      select LAST_INSERT_ID()
+    </selectKey>
   </insert>
+  <resultMap id="userMap" type="User">
+    <id column="id" javaType="java.lang.Integer" property="id"/>
+    <result column="name" javaType="java.lang.String" property="name"/>
+  </resultMap>
   <select id="getUserByID" parameterType="java.lang.Integer" resultMap="userMap" useCache="true">
         select * from `user` where id = #{id}
   </select>
   <select id="getMapByID" parameterType="java.lang.Integer" resultType="map" useCache="true">
         select * from `user` where id = #{id}
   </select>
+
   <select id="getUserByIDAndName" resultMap="userMap" useCache="true">
         select * from `user` where id = #{id} and name = #{param2}
   </select>
-
   <select id="getAll" resultMap="userMap" useCache="true">
         select * from `user`
   </select>
-  <select id="getAllMap" resultType="example.mapper.User" >
+
+
+  <select id="getAllMap" resultType="example.mapper.User">
         select * from `user`
   </select>
-
-
-  <delete id="deleteById" parameterType="User">
-       delete from `user` where id = #{id}
-   </delete>
 
   <update id="updateName" parameterType="User">
        update `user` set name=#{name} where id = #{id}

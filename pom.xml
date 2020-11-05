@@ -20,6 +20,7 @@
     <module>mybatis-test</module>
     <module>shardingsphere</module>
     <module>hikariCP</module>
+    <module>spring-mybatis</module>
   </modules>
 
   <build>

@@ -1,4 +1,4 @@
-package example.mapper;
+package mybatis.domain;
 
 import java.io.Serializable;
 
@@ -10,7 +10,6 @@ public class User implements Serializable {
   private String dept;
   private String phone;
   private String website;
-  private Address address;
 
   public User() {
   }
@@ -60,15 +59,6 @@ public class User implements Serializable {
     return this;
   }
 
-  public Address getAddress() {
-    return address;
-  }
-
-  public User setAddress(Address address) {
-    this.address = address;
-    return this;
-  }
-
   @Override
   public String toString() {
     final StringBuilder sb = new StringBuilder("User{");
@@ -77,7 +67,6 @@ public class User implements Serializable {
     sb.append(", dept='").append(dept).append('\'');
     sb.append(", phone='").append(phone).append('\'');
     sb.append(", website='").append(website).append('\'');
-    sb.append(", address=").append(address);
     sb.append('}');
     return sb.toString();
   }

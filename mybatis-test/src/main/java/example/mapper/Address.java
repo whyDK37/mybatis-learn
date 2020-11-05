@@ -1,6 +1,7 @@
 package example.mapper;
 
 public class Address {
+
   private String city;
 
   public Address(String city) {

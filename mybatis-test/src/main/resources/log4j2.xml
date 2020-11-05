@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="INFO">
-    <Properties>
-        <Property name="var.output.pattern">
-            [%-5p][%t] %C{1.}.%M %msg %n
-        </Property>
-    </Properties>
-    <Appenders>
-        <Console name="stdout" target="SYSTEM_OUT">
-            <PatternLayout pattern="${var.output.pattern}"/>
-        </Console>
-    </Appenders>
-    <Loggers>
-        <AsyncRoot level="DEBUG" includeLocation="true">
-            <AppenderRef ref="stdout"/>
-        </AsyncRoot>
-    </Loggers>
+  <Appenders>
+    <Console name="stdout" target="SYSTEM_OUT">
+      <PatternLayout pattern="${var.output.pattern}"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <AsyncRoot includeLocation="true" level="DEBUG">
+      <AppenderRef ref="stdout"/>
+    </AsyncRoot>
+  </Loggers>
+  <Properties>
+    <Property name="var.output.pattern">
+      [%-5p][%t] %C{1.}.%M %msg %n
+    </Property>
+  </Properties>
 </Configuration>

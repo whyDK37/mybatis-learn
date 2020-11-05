@@ -2,7 +2,7 @@
 <Configuration status="INFO">
   <Properties>
     <Property name="var.output.pattern">
-      [%-5p][%t] %C{1.}.%M %msg %n
+      [%-5p][%t]  %msg %n
     </Property>
   </Properties>
   <Appenders>

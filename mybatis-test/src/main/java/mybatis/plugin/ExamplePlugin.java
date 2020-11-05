@@ -1,13 +1,5 @@
 package mybatis.plugin;
 
-import java.util.Properties;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
-import org.apache.ibatis.plugin.Interceptor;
-import org.apache.ibatis.plugin.Intercepts;
-import org.apache.ibatis.plugin.Invocation;
-import org.apache.ibatis.plugin.Plugin;
-
 //@Intercepts({})
 //public class ExamplePlugin implements Interceptor {
 //

@@ -29,7 +29,6 @@ public class SelectExample {
       //STEP 3: Open a connection
       System.out.println("Connecting to database...");
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
       DatabaseMetaData metaData = conn.getMetaData();
       System.out.println("metaData.supportsBatchUpdates() = " + metaData.supportsBatchUpdates());
 

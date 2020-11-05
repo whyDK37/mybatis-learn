@@ -30,6 +30,11 @@ public class DatasourceDemo {
     config.addDataSourceProperty("serverTimezone", "UTC");
     config.setAllowPoolSuspension(true);
     config.setRegisterMbeans(true);
+    // 获取连接超时时间
+    config.setConnectionTimeout(1000);//30000
+    config.setIdleTimeout(600000);
+    config.setInitializationFailTimeout(1);
+    config.setValidationTimeout(5000);
     HikariDataSource ds = new HikariDataSource(config);
 
     MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
@@ -42,12 +47,12 @@ public class DatasourceDemo {
         + "Active=[" + poolProxy.getActiveConnections() + "] "
         + "Idle=[" + poolProxy.getIdleConnections() + "] "
         + "Wait=[" + poolProxy.getThreadsAwaitingConnection() + "] "
-        + "Total=[" + poolProxy.getTotalConnections() + "]"), 1000, 1000, TimeUnit.MICROSECONDS);
+        + "Total=[" + poolProxy.getTotalConnections() + "]"), 10, 1000, TimeUnit.MICROSECONDS);
 
     Connection conn = ds.getConnection();
     Statement sm = conn.createStatement();
     ResultSet rs = null;
-    for (int i = 0; i < 999999999; i++) {
+    for (int i = 0; i < 10; i++) {
       rs = sm.executeQuery("select 1");
     }
     rs.close();
