@@ -11,7 +11,29 @@
 
   <artifactId>demo</artifactId>
 
+  <properties>
+    <shardingsphere.version>4.1.1</shardingsphere.version>
+
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>2.2.1.RELEASE</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.shardingsphere</groupId>
@@ -21,6 +43,26 @@
       <groupId>org.apache.shardingsphere</groupId>
       <artifactId>sharding-transaction-xa-core</artifactId>
     </dependency>
+
+    <!-- for spring boot -->
+    <dependency>
+      <groupId>org.apache.shardingsphere</groupId>
+      <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+      <version>${shardingsphere.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-collections4</artifactId>
+          <groupId>org.apache.commons</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.shardingsphere/sharding-jdbc-core -->
+    <dependency>
+      <groupId>org.apache.shardingsphere</groupId>
+      <artifactId>sharding-jdbc-core</artifactId>
+    </dependency>
+
+
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
@@ -54,6 +96,11 @@
       <groupId>com.lmax</groupId>
       <artifactId>disruptor</artifactId>
       <version>3.4.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
     </dependency>
 
 
