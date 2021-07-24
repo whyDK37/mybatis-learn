@@ -1,7 +1,7 @@
 package mybatis;
 
-import example.mapper.Address;
-import example.mapper.User;
+import example.domain.Address;
+import example.domain.User;
 import org.apache.ibatis.reflection.DefaultReflectorFactory;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.ReflectorFactory;

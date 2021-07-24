@@ -1,4 +1,4 @@
-package example.mapper;
+package example.domain;
 
 public class Address {
 

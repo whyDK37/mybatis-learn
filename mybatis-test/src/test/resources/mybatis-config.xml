@@ -32,7 +32,7 @@
 
     <!-- 笔名方式3 @Alias("author") 通过在 -->
     <!-- 建议使用全路径，因为在xml中可以直接定位到类-->
-    <typeAlias alias="User" type="example.mapper.User"/>
+    <typeAlias alias="User" type="example.domain.User"/>
   </typeAliases>
   <!--
   https://mybatis.org/mybatis-3/configuration.html#typeAliases
@@ -44,12 +44,12 @@
 
 
 
-  <plugins>
+<!--  <plugins>-->
     <!--    <plugin interceptor="mybatis.plugin.ExamplePlugin"></plugin>-->
-    <plugin interceptor="mybatis.plugin.ThresholdInterceptor">
-      <property name="slowSqlTime" value="0"/>
-    </plugin>
-  </plugins>
+<!--    <plugin interceptor="mybatis.plugin.ThresholdInterceptor">-->
+<!--      <property name="slowSqlTime" value="0"/>-->
+<!--    </plugin>-->
+<!--  </plugins>-->
 
   <environments default="development">
     <environment id="development">
@@ -59,7 +59,7 @@
         <property name="url"
           value="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
         <property name="username" value="root"/>
-        <property name="password" value="root"/>
+        <property name="password" value="wAnghuAnyu"/>
       </dataSource>
     </environment>
   </environments>

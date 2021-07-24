@@ -2,7 +2,7 @@ package mybatis;
 
 import static mybatis.TestUtils.printBatchResult;
 
-import example.mapper.User;
+import example.domain.User;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.SQLException;

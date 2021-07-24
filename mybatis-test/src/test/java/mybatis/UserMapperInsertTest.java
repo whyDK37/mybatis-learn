@@ -2,7 +2,7 @@ package mybatis;
 
 import static mybatis.TestUtils.printBatchResult;
 
-import example.mapper.User;
+import example.domain.User;
 import example.mapper.UserMapper;
 import java.io.IOException;
 import java.io.Reader;
@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
  * <p>
  * <p>3.2.4 版本之后，启用了  parameterType 参数，如果与参数类型不一致，会抛异常。
  */
-class InsertTest {
+class UserMapperInsertTest {
 
   SqlSessionFactory sessionFactory;
 

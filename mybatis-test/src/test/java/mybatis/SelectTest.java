@@ -1,6 +1,6 @@
 package mybatis;
 
-import example.mapper.User;
+import example.domain.User;
 import example.mapper.UserMapper;
 import java.io.IOException;
 import java.io.Reader;

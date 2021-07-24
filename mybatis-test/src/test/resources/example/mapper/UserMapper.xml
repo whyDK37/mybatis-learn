@@ -55,7 +55,7 @@
   </select>
 
 
-  <select id="getAllMap" resultType="example.mapper.User">
+  <select id="getAllMap" resultType="example.domain.User">
         select * from `user`
   </select>
 
