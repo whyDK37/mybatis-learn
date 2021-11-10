@@ -1,6 +1,6 @@
 package mybatis;
 
-import example.mapper.UserMapper;
+import example.mapper.ExtUserMapper;
 import java.io.IOException;
 import java.io.Reader;
 import org.apache.ibatis.io.Resources;
@@ -21,7 +21,7 @@ class SecondCacheTest {
 
     SqlSession session = sessionFactory.openSession();
 
-    UserMapper userMapper = session.getMapper(UserMapper.class);
+    ExtUserMapper userMapper = session.getMapper(ExtUserMapper.class);
 
     System.out.println(userMapper.getUserByID(1));
     System.out.println(userMapper.getUserByID(1));

@@ -5,20 +5,21 @@ import com.google.common.collect.Lists;
 import example.domain.QueryParam;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;
-import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.Configuration;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class DynamicSQLProvider {
+
+    public String query2(QueryParam queryParam, String code) {
+        return null;
+    }
 
     public String query(QueryParam queryParam, ProviderContext context) {
 

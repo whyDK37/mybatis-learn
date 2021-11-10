@@ -1,7 +1,7 @@
 package mybatis;
 
 import example.domain.User;
-import example.mapper.UserMapper;
+import example.mapper.ExtUserMapper;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
@@ -46,7 +46,7 @@ class SelectTest {
   void getUserByID() {
 
     SqlSession sqlSession = sessionFactory.openSession(true);
-    UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+    ExtUserMapper mapper = sqlSession.getMapper(ExtUserMapper.class);
 
     User userByID = mapper.getUserByID(1);
     System.out.println(userByID);
@@ -57,7 +57,7 @@ class SelectTest {
   void getMapByID() {
 
     SqlSession sqlSession = sessionFactory.openSession(true);
-    UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+    ExtUserMapper mapper = sqlSession.getMapper(ExtUserMapper.class);
 
     Map<String, Object> userByID = mapper.getMapByID(1);
     System.out.println(userByID);
@@ -67,7 +67,7 @@ class SelectTest {
   void getUserByIDAndName() {
 
     SqlSession sqlSession = sessionFactory.openSession(true);
-    UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+    ExtUserMapper mapper = sqlSession.getMapper(ExtUserMapper.class);
 
     User userByID = mapper.getUserByIDAndName(1, "bat");
     System.out.println(userByID);
@@ -78,7 +78,7 @@ class SelectTest {
   void getAll() {
 
     SqlSession sqlSession = sessionFactory.openSession(true);
-    UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+    ExtUserMapper mapper = sqlSession.getMapper(ExtUserMapper.class);
 
     List<User> all = mapper.getAll();
     System.out.println(all);
@@ -89,7 +89,7 @@ class SelectTest {
   void getAllMap() {
 
     SqlSession sqlSession = sessionFactory.openSession(true);
-    UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+    ExtUserMapper mapper = sqlSession.getMapper(ExtUserMapper.class);
 
     Map<Integer, User> all = mapper.getAllMap();
     for (Entry<Integer, User> integerUserEntry : all.entrySet()) {

@@ -85,8 +85,8 @@ class ExecutorTest {
         .getMappedStatement("example.mapper.UserMapper.insertUser");
 
     // query
-    batchExecutor.doUpdate(insertUser, new User().setName("" + new Date()));
-    batchExecutor.doUpdate(insertUser, new User().setName("" + new Date()));
+    batchExecutor.doUpdate(insertUser, createUser("" + new Date()));
+    batchExecutor.doUpdate(insertUser, createUser("" + new Date()));
 
     // batch update
     User user = new User();
@@ -97,13 +97,19 @@ class ExecutorTest {
     user.setId(3);
     batchExecutor.doUpdate(update, user);
 
-    batchExecutor.doUpdate(insertUser, new User().setName("" + new Date()));
+    batchExecutor.doUpdate(insertUser, createUser("" + new Date()));
 
     //
     final List<BatchResult> batchResults = batchExecutor.flushStatements(false);
     jdbcTransaction.commit();
     printBatchResult(batchResults);
 
+  }
+
+  private User createUser(String name) {
+    User user2 = new User();
+    user2.setName(name);
+    return user2;
   }
 
   @Test
@@ -114,8 +120,7 @@ class ExecutorTest {
     final MappedStatement insert = configuration
         .getMappedStatement("example.mapper.UserMapper.insertUser");
 
-    User user = new User();
-    user.setName("" + new Date());
+    User user = createUser("" + new Date());
     batchExecutor.doUpdate(insert, user);
     batchExecutor.doUpdate(insert, user);
 

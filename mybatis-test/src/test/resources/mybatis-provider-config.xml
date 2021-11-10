@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <setting name="useColumnLabel" value="true"/>
+        <setting name="useGeneratedKeys" value="false"/>
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <setting name="autoMappingUnknownColumnBehavior" value="WARNING"/>
+        <setting name="defaultExecutorType" value="BATCH"/>
+        <setting name="defaultStatementTimeout" value="25"/>
+        <setting name="defaultFetchSize" value="100"/>
+        <setting name="safeRowBoundsEnabled" value="false"/>
+        <!--    自动转换驼峰和下划线-->
+        <setting name="mapUnderscoreToCamelCase" value="false"/>
+        <setting name="localCacheScope" value="SESSION"/>
+        <setting name="jdbcTypeForNull" value="OTHER"/>
+        <setting name="lazyLoadTriggerMethods"
+                 value="equals,clone,hashCode,toString"/>
+    </settings>
+
+    <typeAliases>
+        <!-- 别名方式1，一个一个的配置 type中放置的是类的全路径，alias中放置的是类别名
+        <typeAliase type="com.mybatis.demo.Entity.User" alias="UserBean"/> -->
+        <!-- 别名方式2，自动扫描，将JAVA类的类名作为类的类别名 -->
+        <!--<package name="com.mybatis.demo.Entity"/>-->
+
+        <!-- 笔名方式3 @Alias("author") 通过在 -->
+        <!-- 建议使用全路径，因为在xml中可以直接定位到类-->
+        <typeAlias alias="User" type="example.domain.User"/>
+    </typeAliases>
+    <!--
+    https://mybatis.org/mybatis-3/configuration.html#typeAliases
+    -->
+
+    <!--
+     https://mybatis.org/mybatis-3/configuration.html#settings
+     -->
+
+
+    <!--  <plugins>-->
+    <!--    <plugin interceptor="mybatis.plugin.ExamplePlugin"></plugin>-->
+    <!--    <plugin interceptor="mybatis.plugin.ThresholdInterceptor">-->
+    <!--      <property name="slowSqlTime" value="0"/>-->
+    <!--    </plugin>-->
+    <!--  </plugins>-->
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url"
+                          value="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+                <property name="username" value="root"/>
+                <property name="password" value="wAnghuAnyu"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="example/mapper/UserProviderMapper.xml"/>
+    </mappers>
+</configuration>

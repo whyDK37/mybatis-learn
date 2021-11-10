@@ -1,48 +1,31 @@
 package example.mapper;
 
-import example.domain.QueryParam;
 import example.domain.User;
-import mybatis.provider.DynamicSQLProvider;
-import mybatis.provider.TableName;
-import org.apache.ibatis.annotations.MapKey;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.SelectProvider;
-
+import example.domain.UserExample;
+import example.domain.UserKey;
 import java.util.List;
-import java.util.Map;
+import org.apache.ibatis.annotations.Param;
 
-/**
- * @author why
- */
-@TableName("user")
 public interface UserMapper {
+    long countByExample(UserExample example);
 
-    User getUserByID(Integer id);
+    int deleteByExample(UserExample example);
 
-    Map<String, Object> getMapByID(Integer id);
+    int deleteByPrimaryKey(UserKey key);
 
+    int insert(User record);
 
-    User getUserByIDAndName(@Param("id") Integer id, @Param("name") String name);
+    int insertSelective(User record);
 
-    List<User> getAll();
+    List<User> selectByExample(UserExample example);
 
-    // 封装map使用哪个属性
-    @MapKey("id")
-//  @Select("select * from user")
-    Map<Integer, User> getAllMap();
+    User selectByPrimaryKey(UserKey key);
 
-    void updateName(User user);
+    int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
 
-    int insertUser(User user);
+    int updateByExample(@Param("record") User record, @Param("example") UserExample example);
 
-    int insertUsers(List<User> user);
+    int updateByPrimaryKeySelective(User record);
 
-    int insertUserUseSelectKey(User user);
-
-    int insertUsersUseSelectKey(List<User> user);
-
-    int deleteById(User user);
-
-    @SelectProvider(type = DynamicSQLProvider.class, method = "query")
-    List<User> query(QueryParam queryParam);
+    int updateByPrimaryKey(User record);
 }

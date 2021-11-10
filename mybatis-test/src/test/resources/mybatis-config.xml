@@ -5,6 +5,7 @@
 <configuration>
 
   <settings>
+    <setting name="logImpl" value="STDOUT_LOGGING"/>
     <setting name="cacheEnabled" value="true"/>
     <setting name="lazyLoadingEnabled" value="true"/>
     <setting name="multipleResultSetsEnabled" value="true"/>
@@ -43,13 +44,12 @@
    -->
 
 
-
-<!--  <plugins>-->
-    <!--    <plugin interceptor="mybatis.plugin.ExamplePlugin"></plugin>-->
-<!--    <plugin interceptor="mybatis.plugin.ThresholdInterceptor">-->
-<!--      <property name="slowSqlTime" value="0"/>-->
-<!--    </plugin>-->
-<!--  </plugins>-->
+  <!--  <plugins>-->
+  <!--    <plugin interceptor="mybatis.plugin.ExamplePlugin"></plugin>-->
+  <!--    <plugin interceptor="mybatis.plugin.ThresholdInterceptor">-->
+  <!--      <property name="slowSqlTime" value="0"/>-->
+  <!--    </plugin>-->
+  <!--  </plugins>-->
 
   <environments default="development">
     <environment id="development">
@@ -65,6 +65,6 @@
   </environments>
   <mappers>
     <package name="example.mapper"/>
-    <!--    <mapper resource="example/UserMapper.xml"/>-->
+    <!--    <mapper resource="example/ExtUserMapper.xml"/>-->
   </mappers>
 </configuration>

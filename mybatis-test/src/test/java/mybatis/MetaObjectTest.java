@@ -20,7 +20,7 @@ class MetaObjectTest {
   @Test
   void test() {
     User user = new User();
-    user.setAddress(new Address("bj"));
+    user.setAddress("bj");
     user.setName("why");
 
     MetaObject metaObject = MetaObject
