@@ -3,9 +3,9 @@ package example;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import example.domain.User;
-import example.domain.UserExample;
-import example.domain.UserExample.Criteria;
-import example.mapper.UserMapper;
+import example.domain.UserExampleExt;
+import example.domain.UserExampleExt.Criteria;
+import example.mapper.UserMapperExample;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.SQLException;
@@ -46,18 +46,23 @@ class ExampleTest {
   }
 
   @Test
-  public void example() throws SQLException {
+  public void exampleExt() throws SQLException {
 
-    UserExample example = new UserExample();
-    Criteria andCriteria = example.createCriteria();
-    andCriteria.andIdIn(Lists.newArrayList(1, 2, 3));
+    UserExampleExt example = new UserExampleExt();
+//    Criteria andCriteria = example.createCriteria();
+    example.createCriteria().andIdIn(Lists.newArrayList(3))
+        .orNameIsNotNull();
 
-    Criteria or = example.or();
-    or.andIdEqualTo(1);
-    or.andIdEqualTo(2);
+//    Criteria or = example.createCriteria();
+//    or.andIdIn(Lists.newArrayList(2));
+//    example.or(or);
+
+//    Criteria or = example.createCriteria();
+//    or.andIdEqualTo(1);
+//    or.andIdEqualTo(2);
 
     SqlSession sqlSession = sessionFactory.openSession(ExecutorType.BATCH, false);
-    UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+    UserMapperExample mapper = sqlSession.getMapper(UserMapperExample.class);
 
     List<User> users = mapper.selectByExample(example);
 
