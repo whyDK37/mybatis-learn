@@ -44,16 +44,33 @@ public class UserExample {
         return criteria;
     }
 
+    public UserExample orderBy(String orderByClause) {
+        this.setOrderByClause(orderByClause);
+        return this;
+    }
+
+    public UserExample orderBy(String ... orderByClauses) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < orderByClauses.length; i++) {
+            sb.append(orderByClauses[i]);
+            if (i < orderByClauses.length - 1) {
+                sb.append(" , ");
+            }
+        }
+        this.setOrderByClause(sb.toString());
+        return this;
+    }
+
     public Criteria createCriteria() {
         Criteria criteria = createCriteriaInternal();
-//        if (oredCriteria.size() == 0) {
+        if (oredCriteria.size() == 0) {
             oredCriteria.add(criteria);
-//        }
+        }
         return criteria;
     }
 
     protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
+        Criteria criteria = new Criteria(this);
         return criteria;
     }
 
@@ -61,6 +78,32 @@ public class UserExample {
         oredCriteria.clear();
         orderByClause = null;
         distinct = false;
+    }
+
+    public static Criteria newAndCreateCriteria() {
+        UserExample example = new UserExample();
+        return example.createCriteria();
+    }
+
+    public UserExample when(boolean condition, IExampleWhen then) {
+        if (condition) {
+            then.example(this);
+        }
+        return this;
+    }
+
+    public UserExample when(boolean condition, IExampleWhen then, IExampleWhen otherwise) {
+        if (condition) {
+            then.example(this);
+        } else {
+            otherwise.example(this);
+        }
+        return this;
+    }
+
+    public UserExample distinct(boolean distinct) {
+        this.setDistinct(distinct);
+        return this;
     }
 
     protected abstract static class GeneratedCriteria {
@@ -119,8 +162,18 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andIdEqualToColumn(User.Column column) {
+            addCriterion(new StringBuilder("id = ").append(column.getEscapedColumnName()).toString());
+            return (Criteria) this;
+        }
+
         public Criteria andIdNotEqualTo(Integer value) {
             addCriterion("id <>", value, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdNotEqualToColumn(User.Column column) {
+            addCriterion(new StringBuilder("id <> ").append(column.getEscapedColumnName()).toString());
             return (Criteria) this;
         }
 
@@ -129,8 +182,18 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andIdGreaterThanColumn(User.Column column) {
+            addCriterion(new StringBuilder("id > ").append(column.getEscapedColumnName()).toString());
+            return (Criteria) this;
+        }
+
         public Criteria andIdGreaterThanOrEqualTo(Integer value) {
             addCriterion("id >=", value, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdGreaterThanOrEqualToColumn(User.Column column) {
+            addCriterion(new StringBuilder("id >= ").append(column.getEscapedColumnName()).toString());
             return (Criteria) this;
         }
 
@@ -139,8 +202,18 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andIdLessThanColumn(User.Column column) {
+            addCriterion(new StringBuilder("id < ").append(column.getEscapedColumnName()).toString());
+            return (Criteria) this;
+        }
+
         public Criteria andIdLessThanOrEqualTo(Integer value) {
             addCriterion("id <=", value, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdLessThanOrEqualToColumn(User.Column column) {
+            addCriterion(new StringBuilder("id <= ").append(column.getEscapedColumnName()).toString());
             return (Criteria) this;
         }
 
@@ -179,8 +252,18 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andNameEqualToColumn(User.Column column) {
+            addCriterion(new StringBuilder("name = ").append(column.getEscapedColumnName()).toString());
+            return (Criteria) this;
+        }
+
         public Criteria andNameNotEqualTo(String value) {
             addCriterion("name <>", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotEqualToColumn(User.Column column) {
+            addCriterion(new StringBuilder("name <> ").append(column.getEscapedColumnName()).toString());
             return (Criteria) this;
         }
 
@@ -189,8 +272,18 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andNameGreaterThanColumn(User.Column column) {
+            addCriterion(new StringBuilder("name > ").append(column.getEscapedColumnName()).toString());
+            return (Criteria) this;
+        }
+
         public Criteria andNameGreaterThanOrEqualTo(String value) {
             addCriterion("name >=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThanOrEqualToColumn(User.Column column) {
+            addCriterion(new StringBuilder("name >= ").append(column.getEscapedColumnName()).toString());
             return (Criteria) this;
         }
 
@@ -199,8 +292,18 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andNameLessThanColumn(User.Column column) {
+            addCriterion(new StringBuilder("name < ").append(column.getEscapedColumnName()).toString());
+            return (Criteria) this;
+        }
+
         public Criteria andNameLessThanOrEqualTo(String value) {
             addCriterion("name <=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThanOrEqualToColumn(User.Column column) {
+            addCriterion(new StringBuilder("name <= ").append(column.getEscapedColumnName()).toString());
             return (Criteria) this;
         }
 
@@ -249,8 +352,18 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andAddressEqualToColumn(User.Column column) {
+            addCriterion(new StringBuilder("address = ").append(column.getEscapedColumnName()).toString());
+            return (Criteria) this;
+        }
+
         public Criteria andAddressNotEqualTo(String value) {
             addCriterion("address <>", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressNotEqualToColumn(User.Column column) {
+            addCriterion(new StringBuilder("address <> ").append(column.getEscapedColumnName()).toString());
             return (Criteria) this;
         }
 
@@ -259,8 +372,18 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andAddressGreaterThanColumn(User.Column column) {
+            addCriterion(new StringBuilder("address > ").append(column.getEscapedColumnName()).toString());
+            return (Criteria) this;
+        }
+
         public Criteria andAddressGreaterThanOrEqualTo(String value) {
             addCriterion("address >=", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressGreaterThanOrEqualToColumn(User.Column column) {
+            addCriterion(new StringBuilder("address >= ").append(column.getEscapedColumnName()).toString());
             return (Criteria) this;
         }
 
@@ -269,8 +392,18 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andAddressLessThanColumn(User.Column column) {
+            addCriterion(new StringBuilder("address < ").append(column.getEscapedColumnName()).toString());
+            return (Criteria) this;
+        }
+
         public Criteria andAddressLessThanOrEqualTo(String value) {
             addCriterion("address <=", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressLessThanOrEqualToColumn(User.Column column) {
+            addCriterion(new StringBuilder("address <= ").append(column.getEscapedColumnName()).toString());
             return (Criteria) this;
         }
 
@@ -303,12 +436,74 @@ public class UserExample {
             addCriterion("address not between", value1, value2, "address");
             return (Criteria) this;
         }
+
+        protected void addCriterion(String andOr, String condition) {
+            if (condition == null) {
+                throw new RuntimeException("Value for condition cannot be null");
+            }
+            Criterion criterion = new Criterion(condition);
+            criterion.setAndOr(andOr);
+            criteria.add(criterion);
+        }
+
+//        protected void addCriterion(String andOr, String condition, Object value, String property) {
+//            if (value == null) {
+//                throw new RuntimeException("Value for " + property + " cannot be null");
+//            }
+//            Criterion criterion = new Criterion(condition, value);
+//            criterion.setAndOr(andOr);
+//            criteria.add(criterion);
+//        }
+
+        protected void addCriterion(String andOr, String condition, Object value1, Object value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            Criterion criterion = new Criterion(condition, value1, value2);
+            criterion.setAndOr(andOr);
+            criteria.add(criterion);
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
+        private UserExample example;
 
-        protected Criteria() {
+        protected Criteria(UserExample example) {
             super();
+            this.example = example;
+        }
+
+        public UserExample example() {
+            return this.example;
+        }
+
+        @Deprecated
+        public Criteria andIf(boolean ifAdd, ICriteriaAdd add) {
+            if (ifAdd) {
+                add.add(this);
+            }
+            return this;
+        }
+
+        public Criteria when(boolean condition, ICriteriaWhen then) {
+            if (condition) {
+                then.criteria(this);
+            }
+            return this;
+        }
+
+        public Criteria when(boolean condition, ICriteriaWhen then, ICriteriaWhen otherwise) {
+            if (condition) {
+                then.criteria(this);
+            } else {
+                otherwise.criteria(this);
+            }
+            return this;
+        }
+
+        @Deprecated
+        public interface ICriteriaAdd {
+            Criteria add(Criteria add);
         }
     }
 
@@ -328,6 +523,8 @@ public class UserExample {
         private boolean listValue;
 
         private String typeHandler;
+
+        private String andOr = "and";;
 
         public String getCondition() {
             return condition;
@@ -396,5 +593,22 @@ public class UserExample {
         protected Criterion(String condition, Object value, Object secondValue) {
             this(condition, value, secondValue, null);
         }
+
+        public String getAndOr() {
+            return this.andOr;
+        }
+
+        protected Criterion setAndOr(String andOr) {
+            this.andOr = andOr;
+            return this;
+        }
+    }
+
+    public interface ICriteriaWhen {
+        void criteria(Criteria criteria);
+    }
+
+    public interface IExampleWhen {
+        void example(example.domain.UserExample example);
     }
 }

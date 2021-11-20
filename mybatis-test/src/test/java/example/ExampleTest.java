@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
  * <p>
  * <p>3.2.4 版本之后，启用了  parameterType 参数，如果与参数类型不一致，会抛异常。
  */
-class ExampleTest {
+public class ExampleTest {
 
   SqlSessionFactory sessionFactory;
 
