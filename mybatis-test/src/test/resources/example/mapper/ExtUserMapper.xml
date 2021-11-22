@@ -48,7 +48,11 @@
     <result column="name" javaType="java.lang.String" property="name"/>
   </resultMap>
   <select id="getUserByID" parameterType="java.lang.Integer" resultMap="userMap" useCache="true">
-        select * from `user` where id = #{id}
+        select * from `user` where
+                                   1=1
+    <if test="id != null">
+         and id = #{id}
+    </if>
   </select>
   <select id="getMapByID" parameterType="java.lang.Integer" resultType="map" useCache="true">
         select * from `user` where id = #{id}

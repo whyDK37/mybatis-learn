@@ -4,11 +4,17 @@ import example.domain.User;
 import example.mapper.ExtUserMapper;
 import java.io.IOException;
 import java.io.Reader;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.executor.SimpleExecutor;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -50,6 +56,20 @@ class SelectTest {
 
     User userByID = mapper.getUserByID(1);
     System.out.println(userByID);
+
+  }
+
+
+  @Test
+  void getUserByID2() throws SQLException {
+    SimpleExecutor simpleExecutor = new SimpleExecutor(sessionFactory.getConfiguration(),
+        jdbcTransaction);
+
+    final MappedStatement ms = sessionFactory.getConfiguration()
+        .getMappedStatement("example.mapper.ExtUserMapper.getUserByID");
+    final BoundSql boundSql = ms.getBoundSql(1);
+
+    simpleExecutor.doQuery(ms, 1, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER, boundSql);
 
   }
 

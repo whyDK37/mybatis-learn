@@ -11,11 +11,11 @@
     <property name="beginningDelimiter" value="`"/>
     <property name="endingDelimiter" value="`"/>
 
-    <plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin">
-    </plugin>
-    <plugin type="com.itfsw.mybatis.generator.plugins.ExampleOrEnhancedPlugin">
-      <property name="enableAndIf" value="true"/>
-    </plugin>
+<!--    <plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin">-->
+<!--    </plugin>-->
+<!--    <plugin type="com.itfsw.mybatis.generator.plugins.ExampleOrEnhancedPlugin">-->
+<!--      <property name="enableAndIf" value="true"/>-->
+<!--    </plugin>-->
 
     <!-- 注释生成器 -->
     <commentGenerator>
