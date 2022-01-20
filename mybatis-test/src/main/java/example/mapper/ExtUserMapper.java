@@ -53,4 +53,9 @@ public interface ExtUserMapper {
     })
     @ResultMap("BaseResultMap")
     List<User> getBySql(Map<String,Object> parameter);
+
+    @Select({
+        "${sql}"
+    })
+    List<Object> getObjBySql(Map<String,Object> parameter);
 }
